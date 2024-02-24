@@ -36,7 +36,7 @@ entries:
     folderitems:
 
     - title: Who am I
-      url: /index.html
+      url: /about_me.html
       output: web, pdf
-       
+
 # Copyright 2024 H. Song
