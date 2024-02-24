@@ -2,47 +2,41 @@
 
 entries:
 - title: sidebar
-  product: Jekyll Doc Theme
+  product: My Projects
   version: 6.0
   folders:
-
-  - title:
-    output: pdf
-    type: frontmatter
-    folderitems:
-    - title:
-      url: /titlepage.html
-      output: pdf
-      type: frontmatter
-    - title:
-      url: /tocpage.html
-      output: pdf
-      type: frontmatter
-
-  - title: Overview
+  - title: About
     output: web, pdf
     folderitems:
 
-    - title: Get started
+    - title: Who am I
       url: /index.html
       output: web, pdf
       type: homepage
 
-    - title: Introduction
-      url: /mydoc_introduction.html
+  - title: Hidden Shape Creation & Detection
+    output: web, pdf
+    folderitems:
+
+    - title: Shape Detection iOS
+      url: /mydoc_release_notes_60.html
       output: web, pdf
 
-    - title: Supported features
-      url: /mydoc_supported_features.html
+    - title: Shape Detection Android
+      url: /mydoc_release_notes_50.html
       output: web, pdf
 
-    - title: About the theme author
-      url: /mydoc_about.html
-      output: web, pdf
+  - title: Hidden Image Viewer
+    output: web
+    folderitems:
 
-    - title: Support
-      url: /mydoc_support.html
-      output: web, pdf
+    - title: Image Processing with GPU Image
+      url: /mydoc_tag_archives_overview.html
+      output: web
+
+    - title: Image Processing with OpenCV
+      url: /mydoc_tag_archives_overview.html
+      output: web
 
   - title: Release Notes
     output: web, pdf
