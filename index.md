@@ -175,39 +175,39 @@ The sidebar data file uses a specific YAML syntax that you must follow. Follow t
 ```yaml
 entries:
 - title: sidebar
-  product: Jekyll Doc Theme
+  product: My Projects
   version: 6.0
   folders:
-  - title: Overview
+  - title: About
     output: web, pdf
     folderitems:
 
-    - title: Get started
+    - title: Who am I
       url: /index.html
       output: web, pdf
       type: homepage
 
-    - title: Introduction
-      url: /mydoc_introduction.html
-      output: web, pdf
-
-  - title: Release Notes
+  - title: Hidden Shape Creation & Detection
     output: web, pdf
     folderitems:
 
-    - title: 6.0 Release notes
+    - title: Shape Detection iOS
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-    - title: 5.0 Release notes
+    - title: Shape Detection Android
       url: /mydoc_release_notes_50.html
       output: web, pdf
 
-  - title: Tag archives
+  - title: Hidden Image Viewer
     output: web
     folderitems:
 
-    - title: Tag archives overview
+    - title: Image Processing with GPU Image
+      url: /mydoc_tag_archives_overview.html
+      output: web
+
+    - title: Image Processing with OpenCV
       url: /mydoc_tag_archives_overview.html
       output: web
 
