@@ -5,6 +5,19 @@ entries:
   product: Projects
   version: 
   folders:
+
+  - title: Hidden Shape Creation & Detection
+    output: web, pdf
+    folderitems:
+
+    - title: Shape Detection iOS
+      url: /proj_202401_01.html
+      output: web, pdf
+
+    - title: Shape Detection Android
+      url: /mydoc_release_notes_50.html
+      output: web, pdf
+
   - title: About
     output: web, pdf
     folderitems:
@@ -14,17 +27,6 @@ entries:
       output: web, pdf
       type: homepage
 
-  - title: Hidden Shape Creation & Detection
-    output: web, pdf
-    folderitems:
-
-    - title: Shape Detection iOS
-      url: /mydoc_release_notes_60.html
-      output: web, pdf
-
-    - title: Shape Detection Android
-      url: /mydoc_release_notes_50.html
-      output: web, pdf
 
   - title: Hidden Image Viewer
     output: web
