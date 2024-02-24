@@ -11,7 +11,7 @@ entries:
     folderitems:
 
     - title: Shape Detection iOS
-      url: /proj_202401_01.html
+      url: /doc202301_01.html
       output: web, pdf
 
     - title: Shape Detection Android
