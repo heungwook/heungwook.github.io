@@ -13,6 +13,7 @@ entries:
     - title: Shape Detection iOS
       url: /doc202301_01.html
       output: web, pdf
+      type: homepage
 
     - title: Shape Detection Android
       url: /mydoc_release_notes_50.html
@@ -25,8 +26,7 @@ entries:
     - title: Who am I
       url: /index.html
       output: web, pdf
-      type: homepage
-
+      
 
   - title: Hidden Image Viewer
     output: web
