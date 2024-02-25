@@ -16,7 +16,11 @@ entries:
       type: homepage
 
     - title: Shape Detection Android
-      url: /mydoc_release_notes_50.html
+      url: /doc202301_02.html
+      output: web, pdf
+
+    - title: Shape Designer .NET Core WPF
+      url: /doc202301_03.html
       output: web, pdf
 
   - title: Hidden Image Viewer
