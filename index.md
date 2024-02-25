@@ -1,11 +1,15 @@
 ---
-title: "Heungwook Song's Blog"
+title: "Projects Blog - Updating..."
 keywords: homepage
 tags: [getting_started]
 sidebar: mydoc_sidebar
 permalink: index.html
-summary: These brief instructions will help you get started quickly with the theme. The other topics in this help provide additional information and detail about working with other aspects of this theme and Jekyll.
+summary: Blog for documenting experiences and technical issues encountered while undertaking various software development projects.
 ---
+
+
+
+
 
 
 

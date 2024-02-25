@@ -6,7 +6,7 @@ entries:
   version: 
   folders:
 
-  - title: Hidden Shape Creation & Detection
+  - title: Hidden Shape Creation & Detection - Machine Learning
     output: web, pdf
     folderitems:
 
@@ -19,7 +19,7 @@ entries:
       url: /doc202301_02.html
       output: web, pdf
 
-    - title: Shape Designer .NET Core WPF
+    - title: Shape Designer .NET 8 + WPF
       url: /doc202301_03.html
       output: web, pdf
 
