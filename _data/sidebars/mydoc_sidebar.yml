@@ -3,7 +3,6 @@
 entries:
 - title: sidebar
   product: Projects
-  version: 
   folders:
 
   - title: Hidden Shape Creation & Detection - Machine Learning
