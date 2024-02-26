@@ -23,16 +23,16 @@ entries:
       url: /doc202301_03.html
       output: web, pdf
 
-  - title: Hidden Image Viewer
+  - title: Hidden Image Viewer App
     output: web
     folderitems:
 
-    - title: Image Processing with GPU Image
-      url: /mydoc_tag_archives_overview.html
+    - title: Hidden Image Viewer/Barcode Detector - iOS
+      url: /doc202302_01.html
       output: web
 
-    - title: Image Processing with OpenCV
-      url: /mydoc_tag_archives_overview.html
+    - title: Hidden Image Viewer/Barcode Detector - Android
+      url: /doc202302_02.html
       output: web
 
   - title: About
