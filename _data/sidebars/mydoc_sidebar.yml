@@ -34,7 +34,7 @@ entries:
       url: /doc202302_02.html
       output: web
 
-    - title: Hidden Image Viewer/Barcode Detector - Android
+    - title: Image Processing with GPUImage/OpenCV
       url: /doc202302_03.html
       output: web
 
