@@ -30,7 +30,7 @@ entries:
       url: /doc202302_01.html
       output: web
 
-    - title: Barcode Detection from GPUImage Processed Images
+    - title: Barcode Detection from GPUImage/OpenCV Processed Images
       url: /doc202302_02.html
       output: web
 
