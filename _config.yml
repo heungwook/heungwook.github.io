@@ -3,10 +3,10 @@ repository: heungwook/heungwook.github.io
 output: web
 # this property is useful for conditional filtering of content that is separate from the PDF.
 
-topnav_title: Heungwook's Projects Blog
+topnav_title: Programming Tech Issues
 # this appears on the top navigation bar next to the home button
 
-site_title: Heungwook's Projects Blog
+site_title: Programming Tech Issues
 # this appears in the html browser tab for the site title (seen mostly by search engines, not users)
 
 company_name: NT Solutions Inc.
@@ -33,7 +33,7 @@ exclude:
   - vendor
 # these are the files and directories that jekyll will exclude from the build
 
-feedback_subject_line: Heungwook's Projects Blog 
+feedback_subject_line: Programming Tech Issues 
 
 feedback_email: heungwook@gmail.com
 # used as a contact email for the Feedback link in the top navigation bar
