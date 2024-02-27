@@ -5,20 +5,23 @@ entries:
   product: Table of Contents
   folders:
 
-  - title: Hidden Shape Creation & Detection - Machine Learning
+  - title: Hidden Shape Creation & Detection
     output: web, pdf
     folderitems:
 
-    - title: Shape Detection iOS
+    - title: Project Overview
       url: /doc202301_01.html
       output: web, pdf
-      type: homepage
 
-    - title: Shape Detection Android
+    - title: Machine Learning - Shape Detection
       url: /doc202301_02.html
       output: web, pdf
 
-    - title: Shape Designer .NET 8 + WPF
+    - title: Shape Detection App - CoreML & TensorFlow Lite
+      url: /doc202301_03.html
+      output: web, pdf
+
+    - title: Shape Designer Desktop App - .NET 8 + WPF
       url: /doc202301_03.html
       output: web, pdf
 
