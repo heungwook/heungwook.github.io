@@ -13,7 +13,7 @@ summary: Blog for documenting experiences and technical issues encountered while
     - [Report Designer](https://report.oryonsoft.com/)
     - [Name Card Designer](https://report.oryonsoft.com/DesignAgitIFrame/Komsco_NameCard01/NameCard.txt)
 - Support WPF or WinForms UI
-- Design and creation of Tax Bills, Financial Reports
+- Design and creation of Tax Bills, Financial Reports and others
 - Support PostScript and PDF output creation for volume printing (more thans 10M pages a month)
 - Support QR Code/DataMatrix, VoicEye and more than 100 1D/2D barcode types 
 - .NET 8 Desktop, WinForms, WPF, React, Typescript 
