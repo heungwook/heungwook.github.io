@@ -22,7 +22,7 @@ entries:
       output: web, pdf
 
     - title: Shape Designer Desktop App - .NET 8 + WPF
-      url: /doc202301_03.html
+      url: /doc202301_04.html
       output: web, pdf
 
   - title: Hidden Image Viewer App
