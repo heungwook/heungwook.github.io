@@ -24,7 +24,7 @@ folder: mydoc
 
 ## Patents
 
-- Method for forming printed matter with multiple hidden images and printed matter with multiple hidden imagesMethod for forming printed matter with multiple hidden images and printed matter with multiple hidden images
+- Method for forming printed matter with multiple hidden images
     - 【Application Date】 09/06/2022
     - 【Application Number】 10-2022-0113091
     - 【Receipt Number】 DP22267
