@@ -857,7 +857,6 @@ span.soft {
 
 @media (max-width: 990px) {
     #mysidebar {
-        width: 25%; 
         position: relative;
     }
 }
@@ -865,14 +864,14 @@ span.soft {
 @media (min-width: 1000px) {
 
     ul#mysidebar {
-        width: 25%;
+
     }
 }
 
 @media (max-width: 900px) {
 
     ul#mysidebar {
-        width: 25%;
+
     }
 }
 
