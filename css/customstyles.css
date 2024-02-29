@@ -857,7 +857,7 @@ span.soft {
 
 @media (max-width: 990px) {
     #mysidebar {
-        width: 25%;
+        width: 25%; 
         position: relative;
     }
 }
