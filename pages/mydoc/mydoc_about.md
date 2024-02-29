@@ -1,9 +1,9 @@
 ---
-title: About the theme's author
+title: About Heungwook Song
 keywords: documentation theme, jekyll, technical writers, help authoring tools, hat replacements
-last_updated: July 3, 2016
-tags: [getting_started]
-summary: "I have used this theme for projects that I've worked on as a professional technical writer."
+last_updated: Feb. 29, 2024
+tags: []
+summary:
 sidebar: mydoc_sidebar
 permalink: /about_me.html
 folder: mydoc
@@ -16,15 +16,21 @@ folder: mydoc
 - Email: heungwook@gmail.com
 - Github Blog: https://heungwook.github.io
 
+## Publications (English to Korean Translations)
+- “The Business of Software” Eric Sink by APress
+- “The Art of Intrusion” Kevin D. Mitnick/William L. Simon by John Willey & Sons, Inc.
+- "Craig Hunt Linux Library - Linux System Administration, 2nd Ed," Vicki Stanfield, published by Sybex
+- "Unix Made Easy, 3rd Ed," John Muster, published by Mc-Graw Hill
+
+## Patents
+
+- Method for forming printed matter with multiple hidden images and printed matter with multiple hidden imagesMethod for forming printed matter with multiple hidden images and printed matter with multiple hidden images
+    - 【Application Date】 09/06/2022
+    - 【Application Number】 10-2022-0113091
+    - 【Receipt Number】 DP22267
 
 ## Summary of Qualifications
 
-- Publications (English to Korean Translations)
-    - “The Business of Software” Eric Sink by APress
-    - “The Art of Intrusion” Kevin D. Mitnick/William L. Simon by John Willey & Sons, Inc.
-    - "Craig Hunt Linux Library - Linux System Administration, 2nd Ed," Vicki Stanfield, 
-published by Sybex
-    - "Unix Made Easy, 3rd Ed," John Muster, published by Mc-Graw Hill
 - ability to develop .NET Framework software with WPF/WinForms
 - ability to develop ASP.NET MVC web software
 - ability to develop computer vision software with OpenCV library, GPUImage
