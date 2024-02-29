@@ -865,13 +865,13 @@ span.soft {
 @media (min-width: 1000px) {
 
     ul#mysidebar {
-        width: 230px;
+        width: 232px;
     }
 }
 @media (min-width: 1200px) {
 
     ul#mysidebar {
-        width: 275px;
+        width: 280px;
     }
 }
 
