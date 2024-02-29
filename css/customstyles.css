@@ -300,11 +300,11 @@ footer {
 
 /* FAQ page */
 #accordion .panel-heading {
-    font-size: 12px;
+    font-size: 11px;
 }
 
 a.accordion-toggle, a.accordion-collapsed {
-    font-size: 14px;
+    font-size: 12px;
     text-decoration: none;
 }
 
@@ -864,7 +864,7 @@ span.soft {
 @media (min-width: 1000px) {
 
     ul#mysidebar {
-        width: 225px;
+        width: 325px;
     }
 }
 
