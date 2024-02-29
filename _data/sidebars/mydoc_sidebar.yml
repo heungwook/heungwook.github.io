@@ -41,6 +41,30 @@ entries:
       url: /doc202302_03.html
       output: web
 
+  - title: Web Development
+    output: web
+    folderitems:
+
+    - title: ReactJS
+      url: /web_reactjs_01.html
+      output: web
+
+    - title: TypeScript
+      url: /web_typescript_01.html
+      output: web
+
+  - title: .NET Development
+    output: web
+    folderitems:
+
+    - title: .NET DataVisualization for Creating PDF, PostScript Output 
+      url: /dotnet_datavisualization_01.html
+      output: web
+
+    - title: High-Performance .NET code - unsafe, Parallel 
+      url: /dotnet_high_performance_01.html
+      output: web
+
   - title: About
     output: web, pdf
     folderitems:
