@@ -855,7 +855,7 @@ span.soft {
     }
 }
 
-@media (max-width: 990px) {
+@media (max-width: 999px) {
     #mysidebar {
         position: relative;
     }
@@ -866,6 +866,12 @@ span.soft {
 
     ul#mysidebar {
         width: 230px;
+    }
+}
+@media (min-width: 1200px) {
+
+    ul#mysidebar {
+        width: 270px;
     }
 }
 
