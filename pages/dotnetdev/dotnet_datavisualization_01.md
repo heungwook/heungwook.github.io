@@ -1,5 +1,5 @@
 ---
-title: .NET DataVisualization for Creating PDF, PostScript Output 
+title: .NET DataVisualization for Creating PDF, PostScript Charts 
 tags: []
 keywords:
 summary: 

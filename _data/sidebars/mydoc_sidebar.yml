@@ -57,7 +57,7 @@ entries:
     output: web
     folderitems:
 
-    - title: .NET DataVisualization for Creating PDF, PostScript Output 
+    - title: .NET DataVisualization for Creating PDF, PostScript Charts 
       url: /dotnet_datavisualization_01.html
       output: web
 
