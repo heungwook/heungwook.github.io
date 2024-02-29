@@ -7,7 +7,7 @@
             // Initialize navgoco with default options
             $("#mydoc-sidebar").navgoco({
                 caretHtml: '',
-                accordion: true,
+                accordion: false,
                 openClass: 'active', // open
                 save: false, // leave false or nav highlighting doesn't work right
                 cookie: {
@@ -43,7 +43,7 @@
         $(document).ready(function() {
             $("#tg-sb-link").click(function() {
                 $("#tg-sb-sidebar").toggle();
-                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-8');
                 $("#tg-sb-content").toggleClass('col-md-12');
                 $("#tg-sb-icon").toggleClass('fa-toggle-on');
                 $("#tg-sb-icon").toggleClass('fa-toggle-off');
@@ -85,7 +85,7 @@
             <div class="col-md-3" id="tg-sb-sidebar">
                 {% include sidebar.html %}
             </div>
-            {% assign content_col_size = "col-md-9" %}
+            {% assign content_col_size = "col-md-8" %}
         {% endunless %}
 
         <!-- Content Column -->
