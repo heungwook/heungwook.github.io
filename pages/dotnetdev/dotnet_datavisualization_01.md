@@ -33,7 +33,10 @@ But, .NET Data Visualization only supports RGB raster image charts(.png, .jpg, e
 
 <details>
 
-<summary>RenderGDI.cs</summary> 
+
+<summary>- RenderGDI.cs</summary> 
+
+- RenderGDI
 
 ```C#
 //-------------------------------------------------------------
