@@ -31,17 +31,17 @@ But, .NET Data Visualization only supports RGB raster image charts(.png, .jpg, e
 
 ### GDI+, PDF, PostScript Rendering Code
 
+
+- GDI+ Rendering
+
 <details>
 
-
-<summary>- RenderGDI.cs</summary> 
-
-- RenderGDI
+<summary> ▶ RenderGDI.cs Source Code (Click To Expane)</summary> 
 
 <pre>
+
 <code>
 
-```C#
 //-------------------------------------------------------------
 // <copyright company=�Microsoft Corporation?
 //   Copyright ?Microsoft Corporation. All Rights Reserved.
@@ -801,16 +801,24 @@ namespace System.Web.UI.DataVisualization.Charting
         #endregion // Fields
     }
 }
-```
 
 </code>
+
 </pre>
 
 </details>
 
-- RenderPDF.cs 
 
-```C#
+- PDF Rendering
+
+<details>
+
+<summary> ▶ RenderPDF.cs Source Code (Click To Expane)</summary> 
+
+<pre>
+
+<code>
+
 //=================================================================
 //  File:		RenderPDF.cs
 //
@@ -1611,11 +1619,24 @@ namespace System.Web.UI.DataVisualization.Charting
 		#endregion // Fields
 	}
 }
-```
 
-- RenderPS.cs
+</code>
 
-```C#
+</pre>
+
+</details>
+
+
+- PostScript Rendering
+
+<details>
+
+<summary> ▶ RenderPS.cs Source Code (Click To Expane)</summary> 
+
+<pre>
+
+<code>
+
 //=================================================================
 //  File:		RenderPS.cs
 //
@@ -2416,8 +2437,12 @@ namespace System.Web.UI.DataVisualization.Charting
 		#endregion // Fields
 	}
 }
-```
 
+</code>
+
+</pre>
+
+</details>
 
 
 
