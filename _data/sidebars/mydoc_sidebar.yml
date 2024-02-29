@@ -65,6 +65,15 @@ entries:
       url: /dotnet_high_performance_01.html
       output: web
 
+  - title: PDF & PostScript
+    output: web
+    folderitems:
+
+    - title: Fonts in PDF and PostScript 
+      url: /pdfps_font_01.html
+      output: web
+
+
   - title: About
     output: web, pdf
     folderitems:
