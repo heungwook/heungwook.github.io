@@ -32,7 +32,7 @@ But, .NET Data Visualization only supports RGB raster image charts(.png, .jpg, e
 
 ### Entry Point to Create PDF, PostScript Charts
 
-- SavePDF(), SavePS() methods in ChartWinControls.cs are the entry points for PDF, PostScript charts creation
+- SavePDF(), SavePS() methods in ChartWinControls.cs are the entry points for PDF, PostScript charts creation.
 
 - SavePDF() Method
 
