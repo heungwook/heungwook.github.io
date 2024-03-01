@@ -2567,14 +2567,16 @@ namespace System.Web.UI.DataVisualization.Charting
 
 - GDI+ Rendering
 
-	For GDI+ Rendering, all the drawing methods call the methods in .NET Forms Graphics class.
+	For GDI+ Rendering, all the drawing warpper methods call the methods in .NET Forms Graphics class.
 	> public Graphics GraphicsGdi { get; set; }
 
 - - -
 
 <details>
 
-<summary> ▶ PdfGraphicsInfo.cs Source Code (Click To Expane)</summary>
+<summary>
+▶ PdfGraphicsInfo.cs Source Code (Click To Expane)
+</summary>
 
 <pre>
 
@@ -3767,7 +3769,9 @@ namespace System.Web.UI.DataVisualization.Charting
 
 <details>
 
-<summary> ▶ PSGraphicsInfo.cs Source Code (Click To Expane)</summary>
+<summary>
+▶ PSGraphicsInfo.cs Source Code (Click To Expane)
+</summary>
 
 <pre>
 
