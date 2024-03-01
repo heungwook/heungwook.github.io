@@ -50,13 +50,13 @@ with Veritas Volume Manager
 ## Professional Experiences
     
 - 2013 ~ Present, NT Solutions Inc.
-    - CEO and Sr. Developer
+    - CEO and Sr. Software Engineer
 - 2008 ~ 2012, CRK Technologies, Inc.
-    - Sr. Developer and Leader of Printer Business Division.
+    - Sr. Software Engineer and Leader of Printer Business Division.
     - Developed Form Designer and Printer Spooler 
-        (For Hyundai Marine and Fire Insurance Co., Ltd.
+        (For Hyundai Marine and Fire Insurance Co., Ltd.)
 - 2005 ~ 2008, Samjeon Industrial Co. Ltd.
-    - Sr. Developer(Printer Business Division)
+    - Sr. Software Engineer (Printer Business Division)
     - Localized and developed high-speed laser printer controller program
     - Designed NEC laser printer(LL-30) panel interface board and developed its firmware
 - 2003 ~ 2005, STMicroelectronics, Korea Design Center(Memory Product Division)
@@ -82,7 +82,7 @@ with Veritas Volume Manager
     - Installed 10 E10000 systems on three major sites and one of them has been listed in the TOP500 Supercomputer Sites(www.top500.org, KT FreeTel).
     - Configured 6 Sun Cluster systems with E10000 and E5500.
     - Configured huge volumes for DB with EMC and A5x00/A3500 storages and Veritas Volume Manager
-- 1995 ~ 1996, Hyundai Electronics Industries Co., Ltd., Kyunggi-do, Korea
+- 1995 ~ 1996, Hyundai Electronics Industries Co., Ltd., Kyunggi-do, Korea -  SK Hynix
     - Engineer, Semiconductor Division
     - Developed programs for testing DRAM products.
 
