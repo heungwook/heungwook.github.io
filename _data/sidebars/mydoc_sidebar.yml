@@ -45,11 +45,11 @@ entries:
     output: web
     folderitems:
 
-    - title: ReactJS
+    - title: ReactJS - Updating
       url: /web_reactjs_01.html
       output: web
 
-    - title: TypeScript
+    - title: TypeScript - Updating
       url: /web_typescript_01.html
       output: web
 
@@ -61,7 +61,7 @@ entries:
       url: /dotnet_datavisualization_01.html
       output: web
 
-    - title: High-Performance .NET code - unsafe, Parallel 
+    - title: High-Performance .NET code - unsafe, Parallel - Updating
       url: /dotnet_high_performance_01.html
       output: web
 
@@ -69,7 +69,7 @@ entries:
     output: web
     folderitems:
 
-    - title: Fonts in PDF and PostScript 
+    - title: Fonts in PDF and PostScript - Updating
       url: /pdfps_font_01.html
       output: web
 
