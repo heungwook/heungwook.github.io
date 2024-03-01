@@ -22,6 +22,13 @@ But, .NET Data Visualization only supports RGB raster image charts(.png, .jpg, e
     - Let's assume we create a chart with 2x2-inch (600 dpi resultion). While drawing raster chart image needs to handle 3 or 4 bytes for 1,200x1,200=1,440,000 pixels, this will cause slow and huge outputs. But, for vector outputs like PDF/PostScript, drawing lines/circles/stroke/fill commands just need few bytes and all these commands will be executed to create rasterization images by Adobe Acrobat PDF Readers or Printers.
     - PostScript and PDF support CMYK, printing color images requires CMYK color-space for precise colors.
 
+- PDF, PostScript Chart Features
+    - Support CMYK color-space
+    - 100% vector graphics
+    - Fonts and reusable objects(images) are not duplicated in PDF and PostScript output
+    - iTextSharp(PDF) and custom PostScript libraries are used
+    - Features above result faster speed and smaller outputs
+
 - Source code for [.NET 8 Data Visualization](https://github.com/heungwook/NET8_DataVisualization)
 
 
@@ -148,7 +155,7 @@ But, .NET Data Visualization only supports RGB raster image charts(.png, .jpg, e
 
 - RenderGDI Code
 
-    - _graphics is GDI+ System.Drawing.Graphics class and it calls GDI+ DrawLine() methods.
+    - _graphics is GDI+ System.Drawing.Graphics object and it calls GDI+ DrawLine() methods.
 
     ```C#
     ...
