@@ -3754,9 +3754,7 @@ namespace System.Web.UI.DataVisualization.Charting
 
     }
 
-
 }
-
 
 </code>
 
@@ -3765,6 +3763,26 @@ namespace System.Web.UI.DataVisualization.Charting
 </details>
 
 - - -
+
+
+
+<details>
+
+<summary>
+▶ PSGraphicsInfo.cs Source Code (Click To Expane)
+</summary>
+
+<pre>
+
+<code>
+
+asdfsdafas
+
+</code>
+
+</pre>
+
+</details>
 
 
 
