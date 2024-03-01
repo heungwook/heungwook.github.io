@@ -3077,7 +3077,163 @@ namespace System.Web.UI.DataVisualization.Charting
 
             }
         }
+        //
+        public void CurveTo(List<PointF> llptfCurveTo)
+        {
+            if (llptfCurveTo.Count == 2)
+                this.cPdfCnts.CurveTo(llptfCurveTo[0].X, llptfCurveTo[0].Y, llptfCurveTo[1].X, llptfCurveTo[1].Y);
+            else if (llptfCurveTo.Count == 3)
+                this.cPdfCnts.CurveTo(llptfCurveTo[0].X, llptfCurveTo[0].Y, llptfCurveTo[1].X, llptfCurveTo[1].Y, llptfCurveTo[2].X, llptfCurveTo[2].Y);
+        }
+        public void SetLineDash(DashStyle ldsDashStyle, float lfLineWidth)
+        {
+            if (lfLineWidth == 0F)
+                lfLineWidth = 0.1F;
 
+            float lfDot = lfLineWidth;
+            float lfDash = lfLineWidth * 3F;
+
+            if (ldsDashStyle == DashStyle.Solid)
+            {
+                this.cPdfCnts.SetLineDash(lfDash);
+            }
+            else if (ldsDashStyle == DashStyle.Dot)
+            {
+                float[] lfaDash = { lfDot, lfDot };
+                this.cPdfCnts.SetLineDash(lfaDash, 0);
+            }
+            else if (ldsDashStyle == DashStyle.Dash)
+            {
+                float[] lfaDash = { lfDash, lfDot };
+                this.cPdfCnts.SetLineDash(lfaDash, 0);
+            }
+            else if (ldsDashStyle == DashStyle.DashDot)
+            {
+                float[] lfaDash = { lfDash, lfDot, lfDot, lfDot };
+                this.cPdfCnts.SetLineDash(lfaDash, 0);
+            }
+            else if (ldsDashStyle == DashStyle.DashDotDot)
+            {
+                float[] lfaDash = { lfDash, lfDot, lfDot, lfDot, lfDot, lfDot };
+                this.cPdfCnts.SetLineDash(lfaDash, 0);
+            }
+            else
+            {
+                this.cPdfCnts.SetLineDash(lfDash, 0);
+            }
+
+        }
+
+        public void SetLineJoin(LineJoin lineJoin)
+		{
+            if (lineJoin == LineJoin.Bevel)
+                cPdfCnts.SetLineJoin(PdfContentByte.LINE_JOIN_BEVEL);
+            else if (lineJoin == LineJoin.Miter)
+                cPdfCnts.SetLineJoin(PdfContentByte.LINE_JOIN_MITER);
+            else if (lineJoin == LineJoin.Round)
+                cPdfCnts.SetLineJoin(PdfContentByte.LINE_JOIN_ROUND);
+        }
+
+        public void SetLineCap(LineCap lineCap)
+        {
+            if (lineCap == LineCap.Round)
+                cPdfCnts.SetLineCap(PdfContentByte.LINE_CAP_ROUND);
+            else if (lineCap == LineCap.Flat)
+                cPdfCnts.SetLineJoin(PdfContentByte.LINE_CAP_BUTT);
+            else if (lineCap == LineCap.Square)
+                cPdfCnts.SetLineJoin(PdfContentByte.LINE_CAP_PROJECTING_SQUARE);
+        }
+
+        //
+        //
+        public void WriteFontPath(PathData lPathD, float lfDpiX, float lfDpiY, bool lbNoClosePathAtEnd)
+        {
+            PointF[] lptfaPathPoint = lPathD.Points;
+            List<PointF> llptfCurveTo = new List<PointF>();
+            byte[] lbyaPathType = lPathD.Types;
+            bool lbIsLastCommandCLOSEPATH = true;
+            for (int idx = 0; idx < lptfaPathPoint.Length; idx++)
+            {
+                PointF lPP = new PointF(UCNV.GetPointFromPixel(lptfaPathPoint[idx].X, lfDpiX),
+                                        -UCNV.GetPointFromPixel(lptfaPathPoint[idx].Y, lfDpiY));
+
+                //lPP.Y = -lPP.Y;
+                byte lPT = lbyaPathType[idx];
+
+                if (llptfCurveTo.Count == 3)
+                {
+                    this.CurveTo(llptfCurveTo);
+                    llptfCurveTo.Clear();
+                }
+                if (lPT >= 0x80)
+                {
+                    if (llptfCurveTo.Count == 0)
+                    {
+                        this.cPdfCnts.LineTo(lPP.X, lPP.Y);
+                    }
+                    else
+                    {
+                        llptfCurveTo.Add(lPP);
+                        this.CurveTo(llptfCurveTo);
+                        llptfCurveTo.Clear();
+                    }
+                }
+                if (lPT == 0x00)    // Indicates that the point is the start of a figure.
+                {
+                    if (!lbIsLastCommandCLOSEPATH)
+                        this.cPdfCnts.ClosePath();
+
+                    this.cPdfCnts.MoveTo(lPP.X, lPP.Y);
+                    lbIsLastCommandCLOSEPATH = false;
+                }
+                else if (lPT == 0x01)   // Indicates that the point is one of the two endpoints of a line.
+                {
+                    this.cPdfCnts.LineTo(lPP.X, lPP.Y);
+                    lbIsLastCommandCLOSEPATH = false;
+                }
+                else if (lPT == 0x03)   // Indicates that the point is an endpoint or control point of a cubic Bezier spline.
+                {
+                    llptfCurveTo.Add(lPP);
+                    lbIsLastCommandCLOSEPATH = false;
+                    //PS_LineTo(lFStream, lPP.X, lPP.Y);
+                }
+                else if (lPT == 0x07)   // Masks all bits except for the three low-order bits, which indicate the point type.
+                {
+                    lbIsLastCommandCLOSEPATH = false;
+                }
+                else if (lPT == 0x20)   // Specifies that the point is a marker.
+                {
+                    lbIsLastCommandCLOSEPATH = false;
+                }
+                else if (lPT == 0x80)   // Specifies that the point is the last point in a closed subpath (figure).
+                {
+                    this.cPdfCnts.ClosePath();
+                    lbIsLastCommandCLOSEPATH = true;
+                }
+                else if (lPT == 0x83)
+                {
+                    this.cPdfCnts.ClosePath();
+                    lbIsLastCommandCLOSEPATH = true;
+                }
+                else if (lPT == 0xa3)
+                {
+                    this.cPdfCnts.ClosePath();
+                    lbIsLastCommandCLOSEPATH = true;
+                }
+                else
+                {
+                }
+            }
+            if (llptfCurveTo.Count == 3)
+            {
+                this.CurveTo(llptfCurveTo);
+                llptfCurveTo.Clear();
+
+            }
+            if (!lbIsLastCommandCLOSEPATH && !lbNoClosePathAtEnd)
+                this.cPdfCnts.ClosePath();
+
+        }
 </code>
 
 </pre>
