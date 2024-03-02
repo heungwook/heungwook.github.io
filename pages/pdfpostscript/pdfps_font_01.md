@@ -1,5 +1,5 @@
 ---
-title: Fonts in PDF and PostScript 
+title: Fonts in PDF, PostScript and HTML-5 Canvas
 tags: []
 keywords:
 summary: 
@@ -114,4 +114,265 @@ public static System.Drawing.Drawing2D.PathData GeometryToGraphicsPath(System.Wi
     return lPData;
 }
 ```
+
+## GDI+ Graphics Path To PostScript Path
+
+```C#
+internal void WriteUPath(string lsPathName, PathData lPathD)
+{
+    UPathHeader(lsPathName);
+
+    PointF[] lptfaPathPoint = lPathD.Points;
+    List<PointF> llptfCurveTo = new List<PointF>();
+    byte[] lbyaPathType = lPathD.Types;
+    bool lbIsLastCommandCLOSEPATH = true;
+    for (int idx = 0; idx < lptfaPathPoint.Length; idx++)
+    {
+        PointF lPP = lptfaPathPoint[idx];
+        lPP.Y = -lPP.Y;
+        byte lPT = lbyaPathType[idx];
+
+        if (llptfCurveTo.Count == 3)
+        {
+            PS_curveto(llptfCurveTo);
+            llptfCurveTo.Clear();
+        }
+        if (lPT >= 0x80)
+        {
+            if (llptfCurveTo.Count == 0)
+            {
+                PS_lineto(lPP.X, lPP.Y);
+            }
+            else
+            {
+                llptfCurveTo.Add(lPP);
+                PS_curveto(llptfCurveTo);
+            }
+            llptfCurveTo.Clear();
+        }
+        if (lPT == 0x00)    // Indicates that the point is the start of a figure.
+        {
+            if (!lbIsLastCommandCLOSEPATH)
+                PS_closepath();
+            PS_moveto(lPP.X, lPP.Y);
+            lbIsLastCommandCLOSEPATH = false;
+        }
+        else if (lPT == 0x01)   // Indicates that the point is one of the two endpoints of a line.
+        {
+            PS_lineto(lPP.X, lPP.Y);
+            lbIsLastCommandCLOSEPATH = false;
+        }
+        else if (lPT == 0x03)   // Indicates that the point is an endpoint or control point of a cubic Bezier spline.
+        {
+            llptfCurveTo.Add(lPP);
+            lbIsLastCommandCLOSEPATH = false;
+            //PS_LineTo(lFStream, lPP.X, lPP.Y);
+        }
+        else if (lPT == 0x07)   // Masks all bits except for the three low-order bits, which indicate the point type.
+        {
+            lbIsLastCommandCLOSEPATH = false;
+        }
+        else if (lPT == 0x20)   // Specifies that the point is a marker.
+        {
+            lbIsLastCommandCLOSEPATH = false;
+        }
+        else if (lPT == 0x80)   // Specifies that the point is the last point in a closed subpath (figure).
+        {
+            PS_closepath();
+            lbIsLastCommandCLOSEPATH = true;
+        }
+        else if (lPT == 0x83)
+        {
+            PS_closepath();
+            lbIsLastCommandCLOSEPATH = true;
+        }
+        else if (lPT == 0xa3)
+        {
+            PS_closepath();
+            lbIsLastCommandCLOSEPATH = true;
+        }
+        else
+        {
+        }
+    }
+    if (!lbIsLastCommandCLOSEPATH)
+        PS_closepath();
+    UPathTail();
+}
+
+private void UPathHeader(string lstrProcedureName)
+{
+    WriteLF();
+    WriteUnicodeToASCII_LF("/" + lstrProcedureName);
+    WriteUnicodeToASCII_LF("{");
+}
+private void UPathTail()
+{
+    WriteUnicodeToASCII_LF("} bind def");
+}
+internal void PS_curveto(List<PointF> llptfCurveTo)
+{
+    string lstrPostScript = string.Empty;
+    for (int idx = 0; idx < llptfCurveTo.Count; idx++)
+    {
+        lstrPostScript += llptfCurveTo[idx].X.ToString("0.###") + " " + llptfCurveTo[idx].Y.ToString("0.###") + " ";
+    }
+    lstrPostScript += csPScurveto;
+    WriteUnicodeToASCII_LF(lstrPostScript);
+}
+internal void PS_moveto(float lfX, float lfY)
+{
+    WriteUnicodeToASCII_LF(String.Format("{0:0.###} {1:0.###} {2}", lfX, lfY, csPSmoveto));
+}
+internal void PS_lineto(float lfX, float lfY)
+{
+    WriteUnicodeToASCII_LF(String.Format("{0:0.###} {1:0.###} {2}", lfX, lfY, csPSlineto));
+}
+internal void PS_closepath()
+{
+    WriteUnicodeToASCII_LF(csPSclosepath);
+}
+
+```
+
+
+
+
+## GDI+ Graphics Path to HTML-5 Canvas Path
+
+```C#
+public static void WriteGraphicsPath(StringBuilder lSB, string Ctx, PathData lPathD)
+{
+    try
+    {
+        HtmlPrint.beginPath(lSB, Ctx);
+        PointF[] lptfaPathPoint = lPathD.Points;
+        List<Point> llptCurveTo = new List<Point>();
+        byte[] lbyaPathType = lPathD.Types;
+        bool lbIsLastCommandCLOSEPATH = true;
+        for (int idx = 0; idx < lptfaPathPoint.Length; idx++)
+        {
+            Point lPP = Point.Round(lptfaPathPoint[idx]);                    
+            byte lPT = lbyaPathType[idx];
+            if (llptCurveTo.Count == 3)
+            {
+                CurveTo(lSB, Ctx, llptCurveTo);
+                llptCurveTo.Clear();
+            }
+            if (lPT >= 0x80)
+            {
+                if (llptCurveTo.Count == 0)
+                {
+                    HtmlPrint.lineTo(lSB, Ctx, lPP.X, lPP.Y);
+                }
+                else
+                {
+                    llptCurveTo.Add(lPP);
+                    CurveTo(lSB, Ctx, llptCurveTo);
+                    llptCurveTo.Clear();
+                }
+            }
+            if (lPT == 0x00)    // Indicates that the point is the start of a figure.
+            {
+                if (!lbIsLastCommandCLOSEPATH)
+                    HtmlPrint.closePath(lSB, Ctx);
+
+                HtmlPrint.moveTo(lSB, Ctx, lPP.X, lPP.Y);
+                lbIsLastCommandCLOSEPATH = false;
+            }
+            else if (lPT == 0x01)   // Indicates that the point is one of the two endpoints of a line.
+            {
+                HtmlPrint.lineTo(lSB, Ctx, lPP.X, lPP.Y);
+                lbIsLastCommandCLOSEPATH = false;
+            }
+            else if (lPT == 0x03)   // Indicates that the point is an endpoint or control point of a cubic Bezier spline.
+            {
+                llptCurveTo.Add(lPP);
+                lbIsLastCommandCLOSEPATH = false;
+                //PS_LineTo(lFStream, lPP.X, lPP.Y);
+            }
+            else if (lPT == 0x07)   // Masks all bits except for the three low-order bits, which indicate the point type.
+            {
+                lbIsLastCommandCLOSEPATH = false;
+            }
+            else if (lPT == 0x20)   // Specifies that the point is a marker.
+            {
+                lbIsLastCommandCLOSEPATH = false;
+            }
+            else if (lPT == 0x80)   // Specifies that the point is the last point in a closed subpath (figure).
+            {
+                HtmlPrint.closePath(lSB, Ctx);
+                lbIsLastCommandCLOSEPATH = true;
+            }
+            else if (lPT == 0x83)
+            {
+                HtmlPrint.closePath(lSB, Ctx);
+                lbIsLastCommandCLOSEPATH = true;
+            }
+            else if (lPT == 0xa3)
+            {
+                HtmlPrint.closePath(lSB, Ctx);
+                lbIsLastCommandCLOSEPATH = true;
+            }
+            else
+            {
+            }
+        }
+        if (llptCurveTo.Count == 3)
+        {
+            CurveTo(lSB, Ctx, llptCurveTo);
+            llptCurveTo.Clear();
+
+        }
+        if (!lbIsLastCommandCLOSEPATH)
+            HtmlPrint.closePath(lSB, Ctx);
+    }
+    catch (Exception lExe)
+    {
+        ORIONDEBUG.LOG(LogInfo.EnumLogLevel.ERROR, "HtmlPrint::WriteGraphicsPath()", lExe);
+    }
+}
+
+public static void CurveTo(StringBuilder lSB, string Ctx, List<Point> llptCurveTo)
+{
+    if (llptCurveTo.Count == 2)
+        HtmlPrint.quadraticCurveTo(lSB, Ctx, llptCurveTo[0].X, llptCurveTo[0].Y, llptCurveTo[1].X, llptCurveTo[1].Y);
+    else if (llptCurveTo.Count == 3)
+        HtmlPrint.bezierCurveTo(lSB, Ctx, llptCurveTo[0].X, llptCurveTo[0].Y, llptCurveTo[1].X, llptCurveTo[1].Y, llptCurveTo[2].X, llptCurveTo[2].Y);
+}
+
+...C#
+
+public static void beginPath(StringBuilder lSB, string Ctx)
+{
+    lSB.Append(Ctx + ".beginPath();\n");
+}
+public static void closePath(StringBuilder lSB, string Ctx)
+{
+    lSB.Append(Ctx + ".closePath();\n");
+}
+//quadraticCurveTo(cp1x, cp1y, x, y)
+public static void quadraticCurveTo(StringBuilder lSB, string Ctx, int cp1x, int cp1y, int x, int y)
+{
+    lSB.Append(Ctx + ".quadraticCurveTo(" + cp1x + "," + cp1y + "," + x + "," + y + ");\n");
+}
+//bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y)
+public static void bezierCurveTo(StringBuilder lSB, string Ctx, int cp1x, int cp1y, int cp2x, int cp2y, int x, int y)
+{
+    lSB.Append(Ctx + ".bezierCurveTo(" + cp1x + "," + cp1y + "," + cp2x + "," + cp2y + "," + x + "," + y + ");\n");
+}
+//moveTo(x, y)
+public static void moveTo(StringBuilder lSB, string Ctx, int x, int y)
+{
+    lSB.Append(Ctx + ".moveTo(" + x + "," + y + ");\n");
+}
+//lineTo(x, y)
+public static void lineTo(StringBuilder lSB, string Ctx, int x, int y)
+{
+    lSB.Append(Ctx + ".lineTo(" + x + "," + y + ");\n");
+}
+```
+
+
+
 
