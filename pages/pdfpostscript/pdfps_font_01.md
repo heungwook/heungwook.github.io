@@ -77,19 +77,27 @@ public static Geometry BuildGeometry(string lsFntFamily, string lsCH, double pos
     >System.Windows.Media.Geometry lGeom = GlyphInfoCache.GetWpfGeomCache(lGlyph, lPD.fWidthDPI, lPD.fHeightDPI, ldFontSize, ldFontScaleW, 1F);
 
 - Set Italic, Horizontal/Vertical Flips
-    >lMtrx = ((MatrixTransform)lGeom.Transform).Matrix;
-    if (lCD.cbFontFlipVert)
-        lMtrx.Append(new Matrix(1, 0, 0, -1, 0, UCNV.GetDIUFromPixel(lSZFCH.CharHeight, lPD.fHeightDPI)));
-    if (lCD.cbFontFlipHorz)
-        lMtrx.Append(new Matrix(-1, 0, 0, 1, UCNV.GetDIUFromPixel(lSZFCH.GapHorz, lPD.fWidthDPI), 0));
-    if (lCD.bFontStyleItalic)
-    {
-        double ldItalicization = -0.35;// -lfFontSizePX / UCNV.GetPixelFromPoint(50F, lPD.fWidthDPI);
-        lMtrx.Append(new Matrix(1, 0, ldItalicization, 1, UCNV.GetDIUFromPixel(lSZFCH.CharHeight, lPD.fWidthDPI) * 0.35, 0));
-    }
-    lGeom.Transform = new MatrixTransform(lMtrx);
+    >lMtrx = ((MatrixTransform)lGeom.Transform).Matrix;<br>
+    if (lCD.cbFontFlipVert)<br>
+        lMtrx.Append(new Matrix(1, 0, 0, -1, 0, UCNV.GetDIUFromPixel(lSZFCH.CharHeight, lPD.fHeightDPI)));<br>
+    if (lCD.cbFontFlipHorz)<br>
+        lMtrx.Append(new Matrix(-1, 0, 0, 1, UCNV.GetDIUFromPixel(lSZFCH.GapHorz, lPD.fWidthDPI), 0));<br>
+    if (lCD.bFontStyleItalic)<br>
+    {<br>
+        double ldItalicization = -0.35;// -lfFontSizePX / UCNV.GetPixelFromPoint(50F, lPD.fWidthDPI);<br>
+        lMtrx.Append(new Matrix(1, 0, ldItalicization, 1, UCNV.GetDIUFromPixel(lSZFCH.CharHeight, lPD.fWidthDPI) * 0.35, 0));<br>
+    }<br>
+    lGeom.Transform = new MatrixTransform(lMtrx);<br>
 
-
+- Font size
+    - WPF Font is extracted 10-point of size, and scale it to actual size when used
+    >double ldFontSizeScale = ldFontSizePT / GlyphInfoCache._DEFFONTSIZE;<br>
+    ldFontScaleW *= ldFontSizeScale;<br>
+    ldFontScaleH *= ldFontSizeScale;<br>
+    lGeom = lGlyph.cGeom.Clone();<br>
+    System.Windows.Media.Matrix lMtrx = new System.Windows.Media.Matrix();<br>
+    lMtrx.Scale(ldFontScaleW, ldFontScaleH);<br>
+    lGeom.Transform = new MatrixTransform(lMtrx);<br>
 
 ```C#
 ...
@@ -161,6 +169,64 @@ foreach (OrionTextBoxInfo.LineChars lLine in llLNChars)
         this.DrawSThru_ULine_WPF(lCD.cItemCanvas, lCD, lPD, lLine, ldInitPosX, ldInitPosY, ldLineWidth);
     }
     
+}
+
+
+... GlyphInfoCache.cs
+
+public static bool DrawPathData_WPF(Canvas lCNVS, OD_PageData lPD, OD_ColumnData lCD,
+                    OrionTextBoxInfo.SizeFChar lSZFCH, double ldFontSizePT, NewColor lncrFore,
+                    System.Windows.Media.Geometry lGeom, System.Windows.Point lptPos)
+{
+    bool lbSuccess = false;
+    try
+    {
+        //
+        if (lSZFCH.cGlyph != null && lSZFCH.cGlyph.isSubstituted && lPD.fontSubstitutionPositionAdjust)
+        {
+            double fontScale = ldFontSizePT / GlyphInfoCache._DEFFONTSIZE;
+            double adjustSubstitutedFontPositionY = UCNV.GetDIUFromPoint(lSZFCH.cGlyph.baselineDifference) * fontScale * 0.7;
+            lptPos.Y += adjustSubstitutedFontPositionY;
+        }
+        //
+        System.Windows.Shapes.Path lFntPath = new System.Windows.Shapes.Path();
+        lFntPath.Data = lGeom;
+        lFntPath.Margin = new Thickness(lptPos.X, lptPos.Y, 0, 0);
+
+        if (lCD.cbFontOutline)
+        {
+            lFntPath.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(lncrFore.RGB.R, lncrFore.RGB.G, lncrFore.RGB.B));
+            lFntPath.StrokeThickness = UCNV.GetDIUFromMM(lCD.cfPenWidth);
+            if (lFntPath.StrokeThickness < 0.2)
+                lFntPath.StrokeThickness = 0.2;
+            lFntPath.StrokeDashArray = OrionWpfDesigner.SetLineDash(lCD.cPenDashStyle);
+            lCNVS.Children.Add(lFntPath);
+        }
+        else
+        {
+            lFntPath.Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(lncrFore.RGB.R, lncrFore.RGB.G, lncrFore.RGB.B));
+            if (lCD.bFontStyleBold)
+            {
+                lFntPath.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(lncrFore.RGB.R, lncrFore.RGB.G, lncrFore.RGB.B));
+                lFntPath.StrokeThickness = UCNV.GetDIUFromPoint(ldFontSizePT / 100.0 * 4.0);
+                if (lFntPath.StrokeThickness < 0.2)
+                    lFntPath.StrokeThickness = 0.2;
+            }
+            lCNVS.Children.Add(lFntPath);
+        }
+
+        lbSuccess = true;
+    }
+    catch (Exception lExe)
+    {
+        lbSuccess = false;
+        ORIONDEBUG.LOG(LogInfo.EnumLogLevel.ERROR, "GlyphInfoCache::DrawPathData_WPF()", lExe);
+    }
+    finally
+    {
+    }
+
+    return lbSuccess;
 }
 
 ...
