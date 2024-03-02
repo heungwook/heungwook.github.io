@@ -65,13 +65,13 @@ public static Geometry BuildGeometry(string lsFntFamily, string lsCH, double pos
 ### Drawing WPF Font Geometry
 
 - Set rotation
-    >Matrix lMtrx = new Matrix();
-    if (lCD.fRotation != 0F)
-    {
-        Point lptRotateCenterPercent = WPF.UC_Item.GetRotateCenterPercent(lCD);
-        lMtrx.RotateAt(lCD.fRotation, lSzTBoxDIU.Width * lptRotateCenterPercent.X, lSzTBoxDIU.Height * lptRotateCenterPercent.Y);
-    }
-    lCD.cItemCanvas.RenderTransform = new MatrixTransform(lMtrx);
+    >Matrix lMtrx = new Matrix();<br>
+    if (lCD.fRotation != 0F)<br>
+    {<br>
+        Point lptRotateCenterPercent = WPF.UC_Item.GetRotateCenterPercent(lCD);<br>
+        lMtrx.RotateAt(lCD.fRotation, lSzTBoxDIU.Width * lptRotateCenterPercent.X, lSzTBoxDIU.Height * lptRotateCenterPercent.Y);<br>
+    }<br>
+    lCD.cItemCanvas.RenderTransform = new MatrixTransform(lMtrx);<br>
 
 - Get geometry from cache
     >System.Windows.Media.Geometry lGeom = GlyphInfoCache.GetWpfGeomCache(lGlyph, lPD.fWidthDPI, lPD.fHeightDPI, ldFontSize, ldFontScaleW, 1F);
