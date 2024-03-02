@@ -30,11 +30,11 @@ Using path based text presentation requires some tricks for better speed and sma
     - In PostScript, once a character is used, put its path into the header of PS file then call the definition when reuse the character
     - In HTML, the path of a character is defined as a function at the top of JavaScript, then the function is called where the character appears
 - PostScript header and body should be compressed
-- To support extended font styles like reverse-order, flips(horizontally, vertically), width-height ratio, outlined, all output formats should have commands for transforming the pathes 
+- To support extended font styles like reverse-order, flips(horizontally, vertically), width-height ratio, outlined, character gap, line gap all output formats should have commands for transforming the pathes 
 
-## Getting WPF Font Geometry
+## Using WPF Font Geometry
 
-
+### Getting WPF Font Geometry
 
 ```C#
 public static Geometry BuildGeometry(string lsFntFamily, string lsCH, double positionXDiu, double positionYDiu)
@@ -62,8 +62,111 @@ public static Geometry BuildGeometry(string lsFntFamily, string lsCH, double pos
 }
 ```
 
+### Drawing WPF Font Geometry
 
-## WPF Geometry To GDI+ Graphics Path
+- Set rotation
+    >Matrix lMtrx = new Matrix();
+    if (lCD.fRotation != 0F)
+    {
+        Point lptRotateCenterPercent = WPF.UC_Item.GetRotateCenterPercent(lCD);
+        lMtrx.RotateAt(lCD.fRotation, lSzTBoxDIU.Width * lptRotateCenterPercent.X, lSzTBoxDIU.Height * lptRotateCenterPercent.Y);
+    }
+    lCD.cItemCanvas.RenderTransform = new MatrixTransform(lMtrx);
+
+- Get geometry from cache
+    >System.Windows.Media.Geometry lGeom = GlyphInfoCache.GetWpfGeomCache(lGlyph, lPD.fWidthDPI, lPD.fHeightDPI, ldFontSize, ldFontScaleW, 1F);
+
+- Set Italic, Horizontal/Vertical Flips
+    >lMtrx = ((MatrixTransform)lGeom.Transform).Matrix;
+    if (lCD.cbFontFlipVert)
+        lMtrx.Append(new Matrix(1, 0, 0, -1, 0, UCNV.GetDIUFromPixel(lSZFCH.CharHeight, lPD.fHeightDPI)));
+    if (lCD.cbFontFlipHorz)
+        lMtrx.Append(new Matrix(-1, 0, 0, 1, UCNV.GetDIUFromPixel(lSZFCH.GapHorz, lPD.fWidthDPI), 0));
+    if (lCD.bFontStyleItalic)
+    {
+        double ldItalicization = -0.35;// -lfFontSizePX / UCNV.GetPixelFromPoint(50F, lPD.fWidthDPI);
+        lMtrx.Append(new Matrix(1, 0, ldItalicization, 1, UCNV.GetDIUFromPixel(lSZFCH.CharHeight, lPD.fWidthDPI) * 0.35, 0));
+    }
+    lGeom.Transform = new MatrixTransform(lMtrx);
+
+
+
+```C#
+...
+
+Matrix lMtrx = new Matrix();
+if (lCD.fRotation != 0F)
+{
+    Point lptRotateCenterPercent = WPF.UC_Item.GetRotateCenterPercent(lCD);
+    lMtrx.RotateAt(lCD.fRotation, lSzTBoxDIU.Width * lptRotateCenterPercent.X, lSzTBoxDIU.Height * lptRotateCenterPercent.Y);
+}
+lCD.cItemCanvas.RenderTransform = new MatrixTransform(lMtrx);
+
+double ldWpfStringPosAdjustX = 0; //WpfFontInfo._DEFFONTSIZE / 5;
+double ldWpfStringPosAdjustY = 0; // WpfFontInfo._DEFFONTSIZE / 10;
+
+foreach (OrionTextBoxInfo.LineChars lLine in llLNChars)
+{
+    if (lLine.LSZFCH == null || lLine.LSZFCH.Count <= 0)
+        continue;
+
+    Point lPtRPos = new Point(UCNV.GetDIUFromPixel(lLine.PTF.X, lPD.fWidthDPI) + ldWpfStringPosAdjustX,
+                                UCNV.GetDIUFromPixel(lLine.PTF.Y, lPD.fHeightDPI) - ldWpfStringPosAdjustY);
+    double ldInitPosX = lPtRPos.X;
+    double ldInitPosY = lPtRPos.Y;
+    double ldLineWidth = 0;
+    //
+    List<OrionConfigInfo.OrionColor> llColors = new List<OrionConfigInfo.OrionColor>();
+    int liColorIX = 0;
+    if (lCD.cColorList.cbUseColorList)
+        llColors = lCD.cColorList.GetColors(lLine.LSZFCH.Count);
+    //
+    foreach (OrionTextBoxInfo.SizeFChar lSZFCH in lLine.LSZFCH)
+    {
+        if (lCD.cColorList.cbUseColorList)
+        {
+            lForeColor = new NewColor(llColors[liColorIX]);
+            liColorIX++;
+        }
+        GlyphInfoCache lGlyph = lSZFCH.cGlyph;
+        if (lGlyph == null || lGlyph.cGeom == null)
+            throw new Exception("OrinWpfDesigner::DrawData_WPF() GlyphInfoCache:lGlyph is NULL");
+
+        System.Windows.Media.Geometry lGeom = GlyphInfoCache.GetWpfGeomCache(lGlyph, lPD.fWidthDPI, lPD.fHeightDPI, ldFontSize, ldFontScaleW, 1F);
+        if (lGeom == null)
+            throw new Exception("OrinWpfDesigner::DrawData_WPF() GlyphInfoCache.GetWpfGeomCache() Return value is NULL");
+
+        if (lCD.bFontStyleItalic || lCD.cbFontFlipVert || lCD.cbFontFlipHorz)
+        {
+            lMtrx = ((MatrixTransform)lGeom.Transform).Matrix;
+            if (lCD.cbFontFlipVert)
+                lMtrx.Append(new Matrix(1, 0, 0, -1, 0, UCNV.GetDIUFromPixel(lSZFCH.CharHeight, lPD.fHeightDPI)));
+            if (lCD.cbFontFlipHorz)
+                lMtrx.Append(new Matrix(-1, 0, 0, 1, UCNV.GetDIUFromPixel(lSZFCH.GapHorz, lPD.fWidthDPI), 0));
+            if (lCD.bFontStyleItalic)
+            {
+                double ldItalicization = -0.35;// -lfFontSizePX / UCNV.GetPixelFromPoint(50F, lPD.fWidthDPI);
+                lMtrx.Append(new Matrix(1, 0, ldItalicization, 1, UCNV.GetDIUFromPixel(lSZFCH.CharHeight, lPD.fWidthDPI) * 0.35, 0));
+            }
+            lGeom.Transform = new MatrixTransform(lMtrx);
+        }
+
+        GlyphInfoCache.DrawPathData_WPF(lCD.cItemCanvas, lPD, lCD, lSZFCH, ldFontSize, lForeColor, lGeom, lPtRPos);
+
+        ldLineWidth += UCNV.GetDIUFromPixel(lSZFCH.GapHorz, lPD.fWidthDPI);
+        lPtRPos.X += UCNV.GetDIUFromPixel(lSZFCH.GapHorz, lPD.fWidthDPI);
+    }
+    if (lCD.bFontStyleStrikeout || lCD.bFontStyleUnderline)
+    {
+        this.DrawSThru_ULine_WPF(lCD.cItemCanvas, lCD, lPD, lLine, ldInitPosX, ldInitPosY, ldLineWidth);
+    }
+    
+}
+
+...
+```
+
+### WPF Geometry To GDI+ Graphics Path
 
 ```C#
 public static System.Drawing.Drawing2D.PathData GeometryToGraphicsPath(System.Windows.Media.Geometry lGeom)
