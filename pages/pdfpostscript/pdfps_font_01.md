@@ -63,5 +63,55 @@ public static Geometry BuildGeometry(string lsFntFamily, string lsCH, double pos
 ```
 
 
-### Entry Points to Create PDF, PostScript Charts
+## WPF Geometry To GDI+ Graphics Path
+
+```C#
+public static System.Drawing.Drawing2D.PathData GeometryToGraphicsPath(System.Windows.Media.Geometry lGeom)
+{
+    System.Drawing.Drawing2D.PathData lPData = null;
+    try
+    {
+        if (lGeom == null)
+            return lPData;
+
+        if (lGeom.IsEmpty())  // for SPACE
+        {
+            lPData = new System.Drawing.Drawing2D.PathData();
+            if (lPData.Points == null)
+                lPData.Points = new System.Drawing.PointF[1] { new System.Drawing.PointF() };
+            if (lPData.Types == null)
+                lPData.Types = new byte[1] { 0 };
+            return lPData;
+        }
+        using (System.Drawing.Drawing2D.GraphicsPath lGPath = new System.Drawing.Drawing2D.GraphicsPath())
+        {
+            PathGeometry lPathGeom = lGeom.GetOutlinedPathGeometry();
+            string lsGeom = lPathGeom.ToString();
+            lsGeom = lsGeom.Replace('E', 'e');
+            Svg2.Pathing.SvgPathSegmentList llSvgPathSegments = Svg2.SvgPathBuilder.Parse(lsGeom);
+            foreach (Svg2.Pathing.SvgPathSegment lSvgPath in llSvgPathSegments)
+            {
+                lSvgPath.AddToPath(lGPath);
+            }
+            lPData = lGPath.PathData;
+            if (lPData.Points == null)
+                lPData.Points = new System.Drawing.PointF[1] { new System.Drawing.PointF() };
+            if (lPData.Types == null)
+                lPData.Types = new byte[1] { 0 };
+        }
+
+        for (int IX = 0;IX < lPData.Points.Length;IX++)
+        {
+            lPData.Points[IX] = new System.Drawing.PointF((float)UCNV.GetPointFromDIU(lPData.Points[IX].X), (float)UCNV.GetPointFromDIU(lPData.Points[IX].Y));
+        }                
+    }
+    catch (Exception lExe)
+    {
+        lPData = null;
+        ORIONDEBUG.LOG(LogInfo.EnumLogLevel.ERROR, "WpfFontCache::ToGraphicsPath()", lExe);
+    }
+
+    return lPData;
+}
+```
 
