@@ -1,0 +1,101 @@
+<html>
+<header>
+</header>
+<body>
+<canvas id='canvas' width='100' height='100'></canvas>
+<script>
+var orgWidth = 4960;
+var orgHeight = 7015;
+var scaleMargin = 0.95;
+var canvas = document.getElementById('canvas');
+var cx = canvas.getContext('2d');
+var scaleX = window.innerWidth / orgWidth * scaleMargin;
+var newWidth = orgWidth * scaleX;
+var newHeight = orgHeight * scaleX;
+canvas.width = newWidth;
+canvas.height = newHeight;
+cx.scale(scaleX, scaleX);
+window.addEventListener('load', drawPage1);
+window.addEventListener('resize', winResize);
+winResize();
+function winResize() {
+scaleX = window.innerWidth / orgWidth * scaleMargin;
+newWidth = orgWidth * scaleX;
+newHeight = orgHeight * scaleX;
+canvas.width = newWidth;
+canvas.height = newHeight;
+cx.scale(scaleX, scaleX);
+drawPage1();
+}
+function F1(_c){
+_c.beginPath();
+_c.moveTo(52,72);
+_c.bezierCurveTo(51,75,50,78,50,79);
+_c.lineTo(32,129);
+_c.lineTo(72,129);
+_c.lineTo(54,79);
+_c.bezierCurveTo(53,78,52,75,52,72);
+_c.lineTo(52,72);
+_c.closePath();
+_c.moveTo(46,59);
+_c.lineTo(58,59);
+_c.lineTo(102,172);
+_c.lineTo(88,172);
+_c.lineTo(76,140);
+_c.lineTo(27,140);
+_c.lineTo(16,172);
+_c.lineTo(2,172);
+_c.lineTo(46,59);
+_c.lineTo(46,59);
+_c.closePath();
+}
+function F2(_c){
+_c.beginPath();
+_c.moveTo(20,50);
+_c.lineTo(89,50);
+_c.bezierCurveTo(88,93,66,126,22,151);
+_c.lineTo(13,142);
+_c.bezierCurveTo(29,135,43,125,55,110);
+_c.bezierCurveTo(68,96,75,79,77,61);
+_c.lineTo(20,61);
+_c.lineTo(20,50);
+_c.closePath();
+_c.moveTo(114,37);
+_c.lineTo(126,37);
+_c.lineTo(126,99);
+_c.lineTo(153,99);
+_c.lineTo(153,109);
+_c.lineTo(126,109);
+_c.lineTo(126,186);
+_c.lineTo(114,186);
+_c.lineTo(114,37);
+_c.lineTo(114,37);
+_c.closePath();
+}
+function drawPage1() {
+cx.save();
+cx.translate(472,354);
+cx.strokeStyle='rgba(0,0,0,1)';
+cx.fillStyle='rgba(0,0,0,1)';
+cx.save();
+cx.translate(0,0);
+cx.translate(0,0);
+F1(cx);
+cx.fill();
+cx.restore();
+cx.restore();
+cx.save();
+cx.translate(472,590);
+cx.strokeStyle='rgba(0,0,0,1)';
+cx.fillStyle='rgba(0,0,0,1)';
+cx.save();
+cx.translate(0,0);
+cx.translate(0,0);
+F2(cx);
+cx.fill();
+cx.restore();
+cx.restore();
+}
+</script>
+</body>
+</html>

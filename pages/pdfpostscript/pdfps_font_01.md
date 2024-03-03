@@ -32,6 +32,19 @@ Using path based text presentation requires some tricks for better speed and sma
 - PostScript header and body should be compressed
 - To support extended font styles like reverse-order, flips(horizontally, vertically), width-height ratio, outlined, character gap, line gap all output formats should have commands for transforming the pathes 
 
+- Web Version of Designer UI
+
+    ![Web Version of Designer UI](OrionDesigner_WebUI.png)
+
+- WPF Version of Designer UI
+
+    ![WPF Version of Designer UI](OrionDesigner_WPF.png)
+
+- WinForms Version of Designer UI
+
+    ![WinForms Version of Designer UI](OrionDesigner_WinForms.png)
+
+
 ## Using WPF Font Geometry
 
 ### Getting WPF Font Geometry
@@ -234,6 +247,10 @@ public static bool DrawPathData_WPF(Canvas lCNVS, OD_PageData lPD, OD_ColumnData
 
 ## Using Font in PostScript with GDI+ Graphics Path
 
+- [PostScript Output](ABC.ps) (GhostView)
+
+    ![PostScript Output](PS_Output.png)
+
 ### Converting WPF Geometry To GDI+ Graphics Path
 
 - Since, there is no way to convert WPF PathGeometry to GDI+ Graphics Path directly, I used [SVG Path](https://github.com/svg-net/SVG/tree/master/Source/Paths) converstion. 
@@ -432,22 +449,87 @@ internal void PS_closepath()
 ### Drawing GDI+ Font Path in PostScript
 
 - Set position and rotation
-    >if (this.fRotation == 0F)</br>
-    {</br>
-        lPD.cPSBody.WriteUnicodeToASCII(String.Format("{0:0.###} {1:0.###} {2} ", </br>
-            lptfAPos.X + lptfAdjPos.X, lptfAPos.Y - lptfAdjPos.Y, OrionPostScript.csPStranslate));</br>
-    }</br>
-    else</br>
-    {</br>
-        lPD.cPSBody.PS_translate(lptfAPos.X, lptfAPos.Y);</br>
-        lPD.cPSBody.PS_rotate(-this.fRotation);</br>
-        lPD.cPSBody.PS_translate(lptfAdjPos.X, -lptfAdjPos.Y);</br>
-    }</br>
+    >if (this.fRotation == 0F)<br/>
+    {<br/>
+        lPD.cPSBody.WriteUnicodeToASCII(String.Format("{0:0.###} {1:0.###} {2} ", <br/>
+            lptfAPos.X + lptfAdjPos.X, lptfAPos.Y - lptfAdjPos.Y, OrionPostScript.csPStranslate));<br/>
+    }<br/>
+    else<br/>
+    {<br/>
+        lPD.cPSBody.PS_translate(lptfAPos.X, lptfAPos.Y);<br/>
+        lPD.cPSBody.PS_rotate(-this.fRotation);<br/>
+        lPD.cPSBody.PS_translate(lptfAdjPos.X, -lptfAdjPos.Y);<br/>
+    }<br/>
 
 
+- Font definitions of character 'A'(F_0) and '가'(F_1) in PostScript header
+    >/F_0<br/>
+    {<br/>
+    3.257 -4.542 m<br/>
+    3.221 -4.767 3.182 -4.925 3.14 -5.016 c<br/>
+    2.002 -8.121 l<br/>
+    4.536 -8.121 l<br/>
+    3.389 -5.016 l<br/>
+    3.346 -4.902 3.311 -4.744 3.281 -4.542 c<br/>
+    3.257 -4.542 l<br/>
+    h<br/>
+    2.881 -3.698 m<br/>
+    3.682 -3.698 l<br/>
+    6.46 -10.885 l<br/>
+    5.586 -10.885 l<br/>
+    4.805 -8.844 l<br/>
+    1.724 -8.844 l<br/>
+    0.996 -10.885 l<br/>
+    0.117 -10.885 l<br/>
+    2.881 -3.698 l<br/>
+    2.881 -3.698 l<br/>
+    h<br/>
+    } bind def<br/>
 
+    >/F_1<br/>
+    {<br/>
+    1.24 -3.185 m<br/>
+    5.64 -3.185 l<br/>
+    5.568 -5.857 4.155 -7.975 1.401 -9.537 c<br/>
+    0.84 -8.947 l<br/>
+    1.826 -8.54 2.71 -7.88 3.491 -6.969 c<br/>
+    4.272 -6.058 4.728 -5.013 4.858 -3.834 c<br/>
+    1.24 -3.834 l<br/>
+    1.24 -3.185 l<br/>
+    h<br/>
+    7.231 -2.345 m<br/>
+    7.959 -2.345 l<br/>
+    7.959 -6.227 l<br/>
+    9.648 -6.227 l<br/>
+    9.648 -6.876 l<br/>
+    7.959 -6.876 l<br/>
+    7.959 -11.764 l<br/>
+    7.231 -11.764 l<br/>
+    7.231 -2.345 l<br/>
+    7.231 -2.345 l<br/>
+    h<br/>
+    } bind def<br/>
 
+- Drawing character 'A' in PostScript body at Page#1
 
+    >%%Page: 1 1<br/>
+    %%PageBoundingBox: 0 0 595 842<br/>
+    %%BeginPageSetup<br/>
+    /olddevice currentpagedevice def<br/>
+    <<<br/>
+    /PageSize [595 842]<br/>
+    \>\> setpagedevice<br/>
+    0 rotate 0 0 translate<br/>
+    %%EndPageSetup<br/>
+    q<br/>
+    56.693 799.37 T 0 0 0 r<br/>
+    q 0 0 T 1.9 1.9 s F_0 f Q       : CHAR 'A' = F_0<br/>
+    Q<br/>
+    q<br/>
+    56.693 771.024 T 0 0 0 r<br/>
+    q 0 0 T 1.9 1.9 s F_1 f Q       : CHAR '가' = F_1<br/>
+    Q<br/>
+    b<br/>
 
 ```C#
 lPD.cPSBody.PS_gsave();
