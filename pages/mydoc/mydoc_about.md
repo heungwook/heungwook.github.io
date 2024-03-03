@@ -17,10 +17,10 @@ folder: mydoc
 - Github Blog: https://heungwook.github.io
 
 ## Publications (English to Korean Translations)
-- “The Business of Software” Eric Sink by APress
-- “The Art of Intrusion” Kevin D. Mitnick/William L. Simon by John Willey & Sons, Inc.
-- "Craig Hunt Linux Library - Linux System Administration, 2nd Ed," Vicki Stanfield, published by Sybex
-- "Unix Made Easy, 3rd Ed," John Muster, published by Mc-Graw Hill
+- [“The Business of Software”, Eric Sink](https://www.yes24.com/Product/Goods/2597700) by APress
+- [“The Art of Intrusion” Kevin D. Mitnick/William L. Simon](https://www.yes24.com/Product/Goods/1484500) by John Willey & Sons, Inc.
+- ["Craig Hunt Linux Library - Linux System Administration, 2nd Ed," Vicki Stanfield](https://www.yes24.com/Product/Goods/389942), published by Sybex
+- ["Unix Made Easy, 3rd Ed," John Muster](https://www.yes24.com/Product/Goods/352626), published by Mc-Graw Hill
 
 ## Patents
 
