@@ -510,7 +510,7 @@ internal void PS_closepath()
     h<br/>
     } bind def<br/>
 
-- Drawing character 'A' in PostScript body at Page#1
+- Drawing character 'A', '가' in PostScript body at Page#1
 
     >%%Page: 1 1<br/>
     %%PageBoundingBox: 0 0 595 842<br/>
@@ -765,10 +765,86 @@ finally
 
 ## Using Font in HTML-5 Canvas with GDI+ Graphics Path 
 
+- [HTML Output](ABC000001.html)
+
+    ![HTML Output](HTML_Output.png)
 
 ### Converting GDI+ Graphics Path to HTML-5 Canvas Path
 
+- Javascript function for character 'A'(F1) and '가'(F2) definition
 
+    >function F1(_c){<br/>
+    _c.beginPath();<br/>
+    _c.moveTo(52,72);<br/>
+    _c.bezierCurveTo(51,75,50,78,50,79);<br/>
+    _c.lineTo(32,129);<br/>
+    _c.lineTo(72,129);<br/>
+    _c.lineTo(54,79);<br/>
+    _c.bezierCurveTo(53,78,52,75,52,72);<br/>
+    _c.lineTo(52,72);<br/>
+    _c.closePath();<br/>
+    _c.moveTo(46,59);<br/>
+    _c.lineTo(58,59);<br/>
+    _c.lineTo(102,172);<br/>
+    _c.lineTo(88,172);<br/>
+    _c.lineTo(76,140);<br/>
+    _c.lineTo(27,140);<br/>
+    _c.lineTo(16,172);<br/>
+    _c.lineTo(2,172);v
+    _c.lineTo(46,59);<br/>
+    _c.lineTo(46,59);<br/>
+    _c.closePath();<br/>
+    }<br/>
+    function F2(_c){<br/>
+    _c.beginPath();<br/>
+    _c.moveTo(20,50);<br/>
+    _c.lineTo(89,50);<br/>
+    _c.bezierCurveTo(88,93,66,126,22,151);<br/>
+    _c.lineTo(13,142);<br/>
+    _c.bezierCurveTo(29,135,43,125,55,110);<br/>
+    _c.bezierCurveTo(68,96,75,79,77,61);<br/>
+    _c.lineTo(20,61);<br/>
+    _c.lineTo(20,50);<br/>
+    _c.closePath();<br/>
+    _c.moveTo(114,37);<br/>
+    _c.lineTo(126,37);<br/>
+    _c.lineTo(126,99);<br/>
+    _c.lineTo(153,99);<br/>
+    _c.lineTo(153,109);<br/>
+    _c.lineTo(126,109);<br/>
+    _c.lineTo(126,186);<br/>
+    _c.lineTo(114,186);<br/>
+    _c.lineTo(114,37);<br/>
+    _c.lineTo(114,37);<br/>
+    _c.closePath();<br/>
+    }<br/>
+
+- Javascript function for drawing characters to HTML BODY
+
+    >function drawPage1() {<br/>
+    cx.save();<br/>
+    cx.translate(472,354);<br/>
+    cx.strokeStyle='rgba(0,0,0,1)';<br/>
+    cx.fillStyle='rgba(0,0,0,1)';<br/>
+    cx.save();<br/>
+    cx.translate(0,0);<br/>
+    cx.translate(0,0);<br/>
+    F1(cx);<br/>
+    cx.fill();<br/>
+    cx.restore();<br/>
+    cx.restore();<br/>
+    cx.save();<br/>
+    cx.translate(472,590);<br/>
+    cx.strokeStyle='rgba(0,0,0,1)';<br/>
+    cx.fillStyle='rgba(0,0,0,1)';<br/>
+    cx.save();<br/>
+    cx.translate(0,0);<br/>
+    cx.translate(0,0);<br/>
+    F2(cx);<br/>
+    cx.fill();<br/>
+    cx.restore();<br/>
+    cx.restore();<br/>
+    }<br/>
 
 ```C#
 public static void WriteGraphicsPath(StringBuilder lSB, string Ctx, PathData lPathD)
