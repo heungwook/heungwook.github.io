@@ -947,7 +947,7 @@ public static void CurveTo(StringBuilder lSB, string Ctx, List<Point> llptCurveT
         HtmlPrint.bezierCurveTo(lSB, Ctx, llptCurveTo[0].X, llptCurveTo[0].Y, llptCurveTo[1].X, llptCurveTo[1].Y, llptCurveTo[2].X, llptCurveTo[2].Y);
 }
 
-...C#
+...
 
 public static void beginPath(StringBuilder lSB, string Ctx)
 {
