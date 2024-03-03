@@ -65,39 +65,39 @@ public static Geometry BuildGeometry(string lsFntFamily, string lsCH, double pos
 ### Drawing WPF Font Geometry
 
 - Set rotation
-    >Matrix lMtrx = new Matrix();<br>
-    if (lCD.fRotation != 0F)<br>
-    {<br>
-        Point lptRotateCenterPercent = WPF.UC_Item.GetRotateCenterPercent(lCD);<br>
-        lMtrx.RotateAt(lCD.fRotation, lSzTBoxDIU.Width * lptRotateCenterPercent.X, lSzTBoxDIU.Height * lptRotateCenterPercent.Y);<br>
-    }<br>
+    >Matrix lMtrx = new Matrix();<br/>
+    if (lCD.fRotation != 0F)<br/>
+    {<br/>
+        Point lptRotateCenterPercent = WPF.UC_Item.GetRotateCenterPercent(lCD);<br/>
+        lMtrx.RotateAt(lCD.fRotation, lSzTBoxDIU.Width * lptRotateCenterPercent.X, lSzTBoxDIU.Height * lptRotateCenterPercent.Y);<br/>
+    }<br/>
     lCD.cItemCanvas.RenderTransform = new MatrixTransform(lMtrx);<br>
 
 - Get geometry from cache
     >System.Windows.Media.Geometry lGeom = GlyphInfoCache.GetWpfGeomCache(lGlyph, lPD.fWidthDPI, lPD.fHeightDPI, ldFontSize, ldFontScaleW, 1F);
 
 - Set Italic, Horizontal/Vertical Flips
-    >lMtrx = ((MatrixTransform)lGeom.Transform).Matrix;<br>
-    if (lCD.cbFontFlipVert)<br>
-        lMtrx.Append(new Matrix(1, 0, 0, -1, 0, UCNV.GetDIUFromPixel(lSZFCH.CharHeight, lPD.fHeightDPI)));<br>
-    if (lCD.cbFontFlipHorz)<br>
-        lMtrx.Append(new Matrix(-1, 0, 0, 1, UCNV.GetDIUFromPixel(lSZFCH.GapHorz, lPD.fWidthDPI), 0));<br>
-    if (lCD.bFontStyleItalic)<br>
-    {<br>
-        double ldItalicization = -0.35;// -lfFontSizePX / UCNV.GetPixelFromPoint(50F, lPD.fWidthDPI);<br>
-        lMtrx.Append(new Matrix(1, 0, ldItalicization, 1, UCNV.GetDIUFromPixel(lSZFCH.CharHeight, lPD.fWidthDPI) * 0.35, 0));<br>
-    }<br>
-    lGeom.Transform = new MatrixTransform(lMtrx);<br>
+    >lMtrx = ((MatrixTransform)lGeom.Transform).Matrix;<br/>
+    if (lCD.cbFontFlipVert)<br/>
+        lMtrx.Append(new Matrix(1, 0, 0, -1, 0, UCNV.GetDIUFromPixel(lSZFCH.CharHeight, lPD.fHeightDPI)));<br/>
+    if (lCD.cbFontFlipHorz)<br/>
+        lMtrx.Append(new Matrix(-1, 0, 0, 1, UCNV.GetDIUFromPixel(lSZFCH.GapHorz, lPD.fWidthDPI), 0));<br/>
+    if (lCD.bFontStyleItalic)<br/>
+    {<br/>
+        double ldItalicization = -0.35;// -lfFontSizePX / UCNV.GetPixelFromPoint(50F, lPD.fWidthDPI);<br/>
+        lMtrx.Append(new Matrix(1, 0, ldItalicization, 1, UCNV.GetDIUFromPixel(lSZFCH.CharHeight, lPD.fWidthDPI) * 0.35, 0));<br/>
+    }<br/>
+    lGeom.Transform = new MatrixTransform(lMtrx);<br/>
 
-- Font size
+- Set font size
     - WPF Font is extracted 10-point of size, and scale it to actual size when used
-    >double ldFontSizeScale = ldFontSizePT / GlyphInfoCache._DEFFONTSIZE;<br>
-    ldFontScaleW *= ldFontSizeScale;<br>
-    ldFontScaleH *= ldFontSizeScale;<br>
-    lGeom = lGlyph.cGeom.Clone();<br>
-    System.Windows.Media.Matrix lMtrx = new System.Windows.Media.Matrix();<br>
-    lMtrx.Scale(ldFontScaleW, ldFontScaleH);<br>
-    lGeom.Transform = new MatrixTransform(lMtrx);<br>
+    >double ldFontSizeScale = ldFontSizePT / GlyphInfoCache._DEFFONTSIZE;<br/>
+    ldFontScaleW *= ldFontSizeScale;<br/>
+    ldFontScaleH *= ldFontSizeScale;<br/>
+    lGeom = lGlyph.cGeom.Clone();<br/>
+    System.Windows.Media.Matrix lMtrx = new System.Windows.Media.Matrix();<br/>
+    lMtrx.Scale(ldFontScaleW, ldFontScaleH);<br/>
+    lGeom.Transform = new MatrixTransform(lMtrx);<br/>
 
 ```C#
 ...
@@ -231,8 +231,24 @@ public static bool DrawPathData_WPF(Canvas lCNVS, OD_PageData lPD, OD_ColumnData
 
 ...
 ```
+## Using Font in PostScript with GDI+ Graphics Path
 
-### WPF Geometry To GDI+ Graphics Path
+### Converting WPF Geometry To GDI+ Graphics Path
+
+- Since, there is no way to convert WPF PathGeometry to GDI+ Graphics Path directly, I used [SVG Path](https://github.com/svg-net/SVG/tree/master/Source/Paths) converstion. 
+    - Fitst, WPF PathGeometry is converted to SVG Path
+    >PathGeometry lPathGeom = lGeom.GetOutlinedPathGeometry();<br/>
+    string lsGeom = lPathGeom.ToString();<br/>
+    
+    - Then, convert [SVG](https://github.com/svg-net/SVG/tree/master/Source/Paths) to GDI+ Path
+    >lsGeom = lsGeom.Replace('E', 'e');<br/>
+    Svg2.Pathing.SvgPathSegmentList llSvgPathSegments = Svg2.SvgPathBuilder.Parse(lsGeom);<br/>
+    foreach (Svg2.Pathing.SvgPathSegment lSvgPath in llSvgPathSegments)<br/>
+    {<br/>
+        lSvgPath.AddToPath(lGPath);<br/>
+    }<br/>
+    lPData = lGPath.PathData;<br/>
+
 
 ```C#
 public static System.Drawing.Drawing2D.PathData GeometryToGraphicsPath(System.Windows.Media.Geometry lGeom)
@@ -284,7 +300,10 @@ public static System.Drawing.Drawing2D.PathData GeometryToGraphicsPath(System.Wi
 }
 ```
 
-## GDI+ Graphics Path To PostScript Path
+
+### GDI+ Graphics Path To PostScript Path
+
+
 
 ```C#
 internal void WriteUPath(string lsPathName, PathData lPathD)
@@ -404,7 +423,7 @@ internal void PS_closepath()
 
 ```
 
-
+## Using 
 
 
 ## GDI+ Graphics Path to HTML-5 Canvas Path
