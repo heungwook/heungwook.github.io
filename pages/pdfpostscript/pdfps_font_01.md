@@ -516,7 +516,7 @@ internal void PS_closepath()
     %%PageBoundingBox: 0 0 595 842<br/>
     %%BeginPageSetup<br/>
     /olddevice currentpagedevice def<br/>
-    <<<br/>
+    \<\<<br/>
     /PageSize [595 842]<br/>
     \>\> setpagedevice<br/>
     0 rotate 0 0 translate<br/>
