@@ -231,6 +231,7 @@ public static bool DrawPathData_WPF(Canvas lCNVS, OD_PageData lPD, OD_ColumnData
 
 ...
 ```
+
 ## Using Font in PostScript with GDI+ Graphics Path
 
 ### Converting WPF Geometry To GDI+ Graphics Path
@@ -303,6 +304,11 @@ public static System.Drawing.Drawing2D.PathData GeometryToGraphicsPath(System.Wi
 
 ### GDI+ Graphics Path To PostScript Path
 
+- GDI+ Path Data contains below path commands
+    >Path value == 0x00 : Move To<br/>
+    Path value == 0x01 : Line To<br/>
+    Path value == 0x03 : Point of Cubic Bezier Spline<br/>
+    Path value == 0x80 : Close Path<br/>
 
 
 ```C#
@@ -423,10 +429,264 @@ internal void PS_closepath()
 
 ```
 
-## Using 
+### Drawing GDI+ Font Path in PostScript
+
+- Set position and rotation
+    >if (this.fRotation == 0F)</br>
+    {</br>
+        lPD.cPSBody.WriteUnicodeToASCII(String.Format("{0:0.###} {1:0.###} {2} ", </br>
+            lptfAPos.X + lptfAdjPos.X, lptfAPos.Y - lptfAdjPos.Y, OrionPostScript.csPStranslate));</br>
+    }</br>
+    else</br>
+    {</br>
+        lPD.cPSBody.PS_translate(lptfAPos.X, lptfAPos.Y);</br>
+        lPD.cPSBody.PS_rotate(-this.fRotation);</br>
+        lPD.cPSBody.PS_translate(lptfAdjPos.X, -lptfAdjPos.Y);</br>
+    }</br>
 
 
-## GDI+ Graphics Path to HTML-5 Canvas Path
+
+
+
+
+```C#
+lPD.cPSBody.PS_gsave();
+
+try
+{
+
+    if (this.fRotation == 0F)
+    {
+        lPD.cPSBody.WriteUnicodeToASCII(String.Format("{0:0.###} {1:0.###} {2} ", 
+                    lptfAPos.X + lptfAdjPos.X, lptfAPos.Y - lptfAdjPos.Y, OrionPostScript.csPStranslate));
+    }
+    else
+    {
+        lPD.cPSBody.PS_translate(lptfAPos.X, lptfAPos.Y);
+        lPD.cPSBody.PS_rotate(-this.fRotation);
+        lPD.cPSBody.PS_translate(lptfAdjPos.X, -lptfAdjPos.Y);
+    }
+
+
+    float lfFontSize = this.GetVariableFontSize();
+    float lfFontScaleW = lfFontSize / PostScriptFontData._DEFFONTSIZE;
+    float lfFontScaleH = lfFontSize / PostScriptFontData._DEFFONTSIZE;
+    //if (this.cfFontHWRatio != 100F)
+    lfFontScaleW *= lfScaleWidth;// / 100F;
+
+    lPD.cPSBody.PS_setrgbcolor(lForeColor);
+    if (this.bFontStyleBold)
+    {
+        lPD.cPSBody.PS_setlinewidth(PostScriptFontData._DEFFONTSIZE * 0.030F);
+    }
+
+    foreach (OrionTextBoxInfo.LineChars lLine in llLNChars)
+    {
+        PointF lptfRPos = new PointF(OrionConfigInfo.UCNV.GetPointFromPixel(lLine.PTF.X, lPD.fWidthDPI),
+                                        -OrionConfigInfo.UCNV.GetPointFromPixel(lLine.PTF.Y, lPD.fHeightDPI));
+
+        if (this.bFontStyleItalic || this.cbFontOutline)
+        {
+            foreach (OrionTextBoxInfo.SizeFChar lSZFCH in lLine.LSZFCH)
+            {
+                SizeF lszfCharGap = new SizeF(OrionConfigInfo.UCNV.GetPointFromPixel((float)lSZFCH.GapHorz, lPD.fWidthDPI),
+                                            OrionConfigInfo.UCNV.GetPointFromPixel((float)lSZFCH.GapVert, lPD.fHeightDPI));
+                if (lSZFCH.CH != '\u200B')
+                    lPD.cPSBody.PS_WriteChar(lPD, this, lptfRPos,
+                                            lfFontScaleW, lfFontScaleH,
+                                            lfFontSize, lSZFCH);
+
+                lptfRPos.X += lszfCharGap.Width;
+            }
+        }
+        else
+        {
+            StringBuilder lSB = new StringBuilder();
+            lSB.AppendFormat(OrionPostScript.csPSgsave + " {0:0.##} {1:0.##} {2} ", lptfRPos.X, lptfRPos.Y, OrionPostScript.csPStranslate);
+            if (lfFontScaleW != 1.0F || lfFontScaleH != 1.0F)
+                lSB.AppendFormat("{0:0.##} {1:0.##} {2} ", lfFontScaleW, lfFontScaleH, OrionPostScript.csPSscale);
+
+            bool lbIsFirstChar = true;
+            float lfGapHPrevChar = 0F;
+            float lfXPosTransform = 0F;
+            //
+            List<OrionConfigInfo.OrionColor> llColors = new List<OrionConfigInfo.OrionColor>();
+            int liColorIX = 0;
+            if (cColorList.cbUseColorList)
+                llColors = cColorList.GetColors(lLine.LSZFCH.Count);
+            //
+            if (this.cbFontFlipHorz || this.cbFontFlipVert)
+            {
+                foreach (OrionTextBoxInfo.SizeFChar lSZFCH in lLine.LSZFCH)
+                {
+                    if (lSZFCH.CH == '\u200B')
+                    {
+                        lfGapHPrevChar = OrionConfigInfo.UCNV.GetPointFromPixel((float)lSZFCH.GapHorz, lPD.fWidthDPI);
+                        lptfRPos.X += lfGapHPrevChar;
+                        continue;
+                    }
+                    if (cColorList.cbUseColorList)
+                    {
+                        NewColor lNCR = new NewColor(llColors[liColorIX]);
+                        liColorIX++;
+                        lPD.cPSBody.PS_setrgbcolor(lSB, lNCR.RGB);
+                    }
+                    //
+                    lSB.AppendFormat("{0}\n", OrionPostScript.csPSgsave);
+                    //
+                    if (lSZFCH.cGlyph != null && lSZFCH.cGlyph.isSubstituted && lPD.fontSubstitutionPositionAdjust)
+                    {
+                        double adjustSubstitutedFontPositionY = lSZFCH.cGlyph.baselineDifference * 0.7;
+                        lSB.AppendFormat("[1 0 0 1 {0:0.##} {1:0.##}] {2}\n",
+                            0,
+                            -adjustSubstitutedFontPositionY,
+                            OrionPostScript.csPSconcat);
+                    }
+                    //
+                    lfXPosTransform += lfGapHPrevChar;
+                    lSB.AppendFormat("[1 0 0 1 {0:0.##} 0] {1}\n", lfXPosTransform / lfFontScaleW, OrionPostScript.csPSconcat);
+                    if (this.cbFontFlipVert)
+                    {
+                        lSB.AppendFormat("[1 0 0 -1 {0:0.##} {1:0.##}] {2}\n",
+                            0,
+                            -OrionConfigInfo.UCNV.GetPointFromPixel((float)lSZFCH.CharHeight, lPD.fHeightDPI) / lfFontScaleH,
+                            OrionPostScript.csPSconcat);
+                    }
+                    if (this.cbFontFlipHorz)
+                    {
+                        lSB.AppendFormat("[-1 0 0 1 {0:0.##} {1:0.##}] {2}\n",
+                            OrionConfigInfo.UCNV.GetPointFromPixel((float)lSZFCH.CharWidth, lPD.fWidthDPI) / lfFontScaleW * 1.35F,
+                            0,
+                            OrionPostScript.csPSconcat);
+                    }
+                    lSB.Append(lSZFCH.FontCache + "\n");
+
+                    if (this.bFontStyleBold)
+                    {
+                        lSB.Append(OrionPostScript.csPSgsave + " " + OrionPostScript.csPSfill + " " + OrionPostScript.csPSgrestore +
+                            " [] 0 " + OrionPostScript.csPSsetdash + " " + OrionPostScript.csPSstroke + " ");
+                    }
+                    else
+                    {
+                        lSB.Append(OrionPostScript.csPSfill + " ");
+                    }
+
+                    lSB.AppendFormat("{0}\n", OrionPostScript.csPSgrestore);
+
+
+                    lfGapHPrevChar = OrionConfigInfo.UCNV.GetPointFromPixel((float)lSZFCH.GapHorz, lPD.fWidthDPI);
+                    lptfRPos.X += lfGapHPrevChar;
+
+                }
+            }
+            else
+            {
+                foreach (OrionTextBoxInfo.SizeFChar lSZFCH in lLine.LSZFCH)
+                {
+                    if (lSZFCH.CH == '\u200B')
+                    {
+                        lfGapHPrevChar = OrionConfigInfo.UCNV.GetPointFromPixel((float)lSZFCH.GapHorz, lPD.fWidthDPI);
+                        lptfRPos.X += lfGapHPrevChar;
+                        continue;
+                    }
+
+                    if (lSZFCH.cGlyph != null && lSZFCH.cGlyph.isSubstituted && lPD.fontSubstitutionPositionAdjust)
+                    {
+                        double adjustSubstitutedFontPositionY = lSZFCH.cGlyph.baselineDifference * 0.7;
+                        lSB.AppendFormat("[1 0 0 1 {0:0.##} {1:0.##}] {2}\n",
+                            0,
+                            -adjustSubstitutedFontPositionY,
+                            OrionPostScript.csPSconcat);
+
+                        if (lbIsFirstChar)
+                        {
+                            lSB.Append(lSZFCH.FontCache + " ");
+                            lbIsFirstChar = false;
+                        }
+                        else
+                        {
+                            lSB.AppendFormat("{0:0.##} X {1} ", lfGapHPrevChar / lfFontScaleW, lSZFCH.FontCache);
+                        }
+                        lSB.AppendFormat("[1 0 0 1 {0:0.##} {1:0.##}] {2}\n",
+                            0,
+                            adjustSubstitutedFontPositionY,
+                            OrionPostScript.csPSconcat);
+                    }
+                    else
+                    {
+                        if (lbIsFirstChar)
+                        {
+                            lSB.Append(lSZFCH.FontCache + " ");
+                            lbIsFirstChar = false;
+                        }
+                        else
+                        {
+                            lSB.AppendFormat("{0:0.##} X {1} ", lfGapHPrevChar / lfFontScaleW, lSZFCH.FontCache);
+                        }
+                    }
+                    //
+
+
+                    lfGapHPrevChar = OrionConfigInfo.UCNV.GetPointFromPixel((float)lSZFCH.GapHorz, lPD.fWidthDPI);
+                    lptfRPos.X += lfGapHPrevChar;
+                    if (cColorList.cbUseColorList)
+                    {
+                        NewColor lNCR = new NewColor(llColors[liColorIX]);
+                        liColorIX++;
+                        lPD.cPSBody.PS_setrgbcolor(lSB, lNCR.RGB);
+                        if (this.bFontStyleBold)
+                        {
+                            lSB.Append(OrionPostScript.csPSgsave + " " + OrionPostScript.csPSfill + " " + OrionPostScript.csPSgrestore +
+                                " [] 0 " + OrionPostScript.csPSsetdash + " " + OrionPostScript.csPSstroke + " ");
+                        }
+                        else
+                        {
+                            lSB.Append(OrionPostScript.csPSfill + " ");
+                        }
+
+                    }
+                }
+                if (!cColorList.cbUseColorList)
+                {
+                    if (this.bFontStyleBold)
+                    {
+                        lSB.Append(OrionPostScript.csPSgsave + " " + OrionPostScript.csPSfill + " " + OrionPostScript.csPSgrestore +
+                            " [] 0 " + OrionPostScript.csPSsetdash + " " + OrionPostScript.csPSstroke + " ");
+                    }
+                    else
+                    {
+                        lSB.Append(OrionPostScript.csPSfill + " ");
+                    }
+                }
+            }
+            lSB.AppendLine(OrionPostScript.csPSgrestore);
+            lPD.cPSBody.WriteUnicodeToASCII(lSB.ToString());
+        }
+
+        if (this.bFontStyleStrikeout || this.bFontStyleUnderline)
+            this.DrawSThru_ULine_PS(lPD, lPD.cPSBody, lLine);
+
+    }
+}
+catch (Exception exe)
+{
+    ORIONDEBUG.LOG(LogInfo.EnumLogLevel.ERROR, "Error in OD_ColumnData::DrawData_PS()", exe);
+}
+finally
+{
+    lPD.cPSBody.PS_grestore();
+    lStrFmt.Dispose();
+}
+```
+
+
+
+## Using Font in HTML-5 Canvas with GDI+ Graphics Path 
+
+
+### Converting GDI+ Graphics Path to HTML-5 Canvas Path
+
+
 
 ```C#
 public static void WriteGraphicsPath(StringBuilder lSB, string Ctx, PathData lPathD)
