@@ -37,8 +37,9 @@ folder: mydoc
 
 ## Summary of Qualifications
 
-- ability to develop .NET Framework software with WPF/WinForms
-- ability to develop ASP.NET MVC web software
+- ability to develop .NET Framework, .NET Core software with WPF/WinForms
+- ability to develop ASP.NET MVC, ASP.NET Core web software
+- ability to develop ReactJS, TypeScript web software
 - ability to develop computer vision software with OpenCV library, GPUImage
 - ability to maintain Sun and Linux's network environment(including NIS & Automount)
 - ability to make programs in C, Perl, KSH(Unix/Linux) and Visual C++(Windows)
