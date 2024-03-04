@@ -77,8 +77,12 @@ entries:
       url: /usingfonts_wpffontgeometry.html
       output: web
 
-    - title: Using WPF Font Geometry
+    - title: Using Font in PostScript with GDI+ Graphics Path
       url: /usingfonts_postscript.html
+      output: web
+
+    - title: Using Font in HTML-5 Canvas with GDI+ Graphics Path
+      url: /usingfonts_html5canvas.html
       output: web
 
   - title: About
