@@ -31,10 +31,36 @@ But, .NET Data Visualization only supports RGB raster image charts(.png, .jpg, e
 
 - Source code for [.NET 8 Data Visualization with PDF and PostScript](https://github.com/heungwook/NET8_DataVisualization)
 
+- Chart Designer
+
+    ![Chart Designer](OrionChartDesigner.png)
+
 
 ## Implementation of PDF & PostScript Charts
 
 .NET Data Visualization library uses GDI+ for drawing chart's components like X-Y axis lines, ellipses and label texts. So, I've implemented PDF and PostScript warappers to replace all GDI+ drawing methods that are used in chart drawing.
+
+### Comparisons PDF vs PostScript vs Image Charts
+
+|    | PDF Chart (CMYK Color-Space) | PostScript Chart | Image Chart |
+|----|-----------|------------------|-------------|
+| Creation Time (1,000 pages, 2 charts/page)| 14 seconds | 10 seconds | 35 minutes |
+| File Size | 7,362 kb | 2,641 kb | 430 mb | 
+
+- [PDF Chart Sample - CMYK Color-Space](Charts_2000Charts_1000Pages_14sec.pdf)
+
+![PDF Chart Sample](ChartPDF_CMYK.png)
+
+
+- [PostScript Chart Sample](Charts_2000Charts_1000Pages_10sec.ps)
+
+![PostScript Chart Sample](ChartPS.png)
+
+
+- Image Chart Sample - 600x600 dpi in PNG format
+
+![Image Chart Sample](ChartPNG_600x600DPI.png)
+
 
 
 ### Entry Points to Create PDF, PostScript Charts
