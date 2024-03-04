@@ -85,6 +85,10 @@ entries:
       url: /usingfonts_html5canvas.html
       output: web
 
+    - title: Drawing Texts in PDF
+      url: /usingfonts_pdf.html
+      output: web
+
   - title: About
     output: web, pdf
     folderitems:
