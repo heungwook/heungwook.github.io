@@ -1021,7 +1021,7 @@ public static void lineTo(StringBuilder lSB, string Ctx, int x, int y)
             lPdfContent.ConcatCTM(-1, 0, 0, 1, OrionConfigInfo.UCNV.GetPointFromPixel((float)lSZFCH.CharWidth, lPD.fWidthDPI) * 1F, 0);<br/>
     }<br/>
 
-
+ 
 - Place Text
 
     >lPdfContent.SetTextRise(0F);<br/>
