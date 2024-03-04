@@ -40,7 +40,7 @@ But, .NET Data Visualization only supports RGB raster image charts(.png, .jpg, e
 
 .NET Data Visualization library uses GDI+ for drawing chart's components like X-Y axis lines, ellipses and label texts. So, I've implemented PDF and PostScript warappers to replace all GDI+ drawing methods that are used in chart drawing.
 
-### Comparisons PDF vs PostScript vs Image Charts
+### Performance Comparisons: PDF vs PostScript vs Image Charts
 
 |    | PDF Chart (CMYK Color-Space) | PostScript Chart | Image Chart |
 |----|-----------|------------------|-------------|
