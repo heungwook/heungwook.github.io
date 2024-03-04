@@ -29,7 +29,7 @@ But, .NET Data Visualization only supports RGB raster image charts(.png, .jpg, e
     - iTextSharp(PDF) and custom PostScript libraries are used
     - Features above result faster speed and smaller outputs
 
-- Source code for [.NET 8 Data Visualization](https://github.com/heungwook/NET8_DataVisualization)
+- Source code for [.NET 8 Data Visualization with PDF and PostScript](https://github.com/heungwook/NET8_DataVisualization)
 
 
 ## Implementation of PDF & PostScript Charts
