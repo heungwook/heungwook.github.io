@@ -10,7 +10,7 @@ folder: usingfonts
 
 ## Overview
 
-Orion Rport Designer supports various output formats including PDF, PostScript, HTML-5, Images(png, jpg, tiff, bmp) and also supports WPF, WinForms, Web design user interfaces.
+Orion Report Designer supports various output formats including PDF, PostScript, HTML-5, Images(png, jpg, tiff, bmp) and also supports WPF, WinForms, Web design user interfaces.
 Each output handles text fonts in different ways, 
 
 - WPF supports TTF(TreuType Font) and OTF(OpenType Font)
