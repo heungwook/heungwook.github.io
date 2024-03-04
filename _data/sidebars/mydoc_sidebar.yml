@@ -65,12 +65,16 @@ entries:
       url: /dotnet_high_performance_01.html
       output: web
 
-  - title: PDF & PostScript
+  - title: Using Fonts in PDF, PostScript, HTML-5 Canvas
     output: web
     folderitems:
 
-    - title: Fonts in PDF, PostScript and HTML-5 Canvas
-      url: /pdfps_font_01.html
+    - title: Overview
+      url: /usingfonts_overview.html
+      output: web
+
+    - title: Using WPF Font Geometry
+      url: /using_wpf_font_geometry.html
       output: web
 
 
