@@ -42,24 +42,26 @@ But, .NET Data Visualization only supports RGB raster image charts(.png, .jpg, e
 
 ### Performance Comparisons: PDF vs PostScript vs Image Charts
 
-|    | PDF Chart (CMYK Color-Space) | PostScript Chart | Image Chart |
-|----|-----------|------------------|-------------|
-| Creation Time (1,000 pages, 2 charts/page)| 14 seconds | 10 seconds | 35 minutes |
-| File Size | 7,362 kb | 2,641 kb | 430 mb | 
+- 1,000 pages (A4), 2 charts/page
+
+    |    | PDF Chart (CMYK Color-Space) | PostScript Chart | Image Chart |
+    |----|-----------|------------------|-------------|
+    | Creation Time | 14 seconds | 10 seconds | 35 minutes |
+    | File Size | 7,362 kb | 2,641 kb | 430 mb | 
 
 - [PDF Chart Sample - CMYK Color-Space](Charts_2000Charts_1000Pages_14sec.pdf)
 
-![PDF Chart Sample](ChartPDF_CMYK.png)
+    ![PDF Chart Sample](ChartPDF_CMYK.png)
 
 
 - [PostScript Chart Sample](Charts_2000Charts_1000Pages_10sec.ps)
 
-![PostScript Chart Sample](ChartPS.png)
+    ![PostScript Chart Sample](ChartPS.png)
 
 
 - Image Chart Sample - 600x600 dpi in PNG format
 
-![Image Chart Sample](ChartPNG_600x600DPI.png)
+    ![Image Chart Sample](ChartPNG_600x600DPI.png)
 
 
 
