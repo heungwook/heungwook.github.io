@@ -29,6 +29,12 @@ folder: mydoc
     - 【Application Number】 10-2022-0113091
     - 【Receipt Number】 DP22267
 
+- Method for creating and printing dynamic forms
+    - 【Patent Number】 10-1383171
+    - 【Application Date】 08/16/2012
+    - 【Registration Date】 04/02/2042
+    - 【Application Number】 2012-0089659
+
 ## Summary of Qualifications
 
 - ability to develop .NET Framework software with WPF/WinForms
