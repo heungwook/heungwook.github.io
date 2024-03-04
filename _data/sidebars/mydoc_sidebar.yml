@@ -74,9 +74,12 @@ entries:
       output: web
 
     - title: Using WPF Font Geometry
-      url: /using_wpf_font_geometry.html
+      url: /usingfonts_wpffontgeometry.html
       output: web
 
+    - title: Using WPF Font Geometry
+      url: /usingfonts_postscript.html
+      output: web
 
   - title: About
     output: web, pdf

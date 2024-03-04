@@ -1,10 +1,10 @@
-bb---
+---
 title: Using WPF Font Geomotry
 tags: []
 keywords:
 summary: 
 sidebar: mydoc_sidebar
-permalink: using_wpf_font_geometry.html
+permalink: usingfonts_wpffontgeometry.html
 folder: usingfonts
 ---
 
