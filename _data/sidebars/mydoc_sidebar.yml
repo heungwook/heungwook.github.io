@@ -45,6 +45,10 @@ entries:
     output: web
     folderitems:
 
+    - title: WebSocket (from WebApi)
+      url: /web_websocket_01.html
+      output: web
+
     - title: ReactJS - Updating
       url: /web_reactjs_01.html
       output: web
