@@ -30,8 +30,6 @@ In March 2024, I am integrating Orion's Web Editor module into a customer's envi
 
 ****
 
-## WebSocket in .NET
-
 ## IIS vs Kestrel for HTTPS and WSS
 
 ### IIS and Backend Services
@@ -41,6 +39,7 @@ Initially, I configured the SSL WebSocket service through IIS because IIS handle
 ### Kestrel with SSL Certificate
 
 
+## WebSocket in .NET
 
 ### Reconnecting WebSocket Library
 
