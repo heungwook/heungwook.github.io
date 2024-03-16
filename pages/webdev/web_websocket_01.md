@@ -25,7 +25,7 @@ In March 2024, since I got the first order of Web Editor module, I'm integrating
 
 *****
 
-- Orion Web Editor with WebSocket 
+- Orion Web Editor with Kestrel and WebSocket 
     ![Orion Web Editor with WebSocket](WebEdit_WebSocket.png)
 
 ****
