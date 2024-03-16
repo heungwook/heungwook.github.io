@@ -32,6 +32,16 @@ In March 2024, I am integrating Orion's Web Editor module into a customer's envi
 
 ## WebSocket in .NET
 
+## IIS vs Kestrel for HTTPS and WSS
+
+### IIS and Backend Services
+
+Initially, I configured the SSL WebSocket service through IIS because IIS handles the SSL certificate and connections from browsers. However, it did not work as I tested in the development environment using Kestrel. With IIS, the backend TCP socket server was very unstable, and I couldn't determine the cause. I suspect that the threading of the IIS worker process might have affected it.
+
+### Kestrel with SSL Certificate
+
+
+
 ### Reconnecting WebSocket Library
 
 ASP.NET Core supports [WebSocket](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.websockets?view=aspnetcore-8.0) and there is a TypeScript library([Reconnecting WebSocket](https://github.com/pladaria/reconnecting-websocket)) featuring automatic reconnection when the connection is lost.  
