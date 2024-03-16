@@ -45,7 +45,7 @@ entries:
     output: web
     folderitems:
 
-    - title: WebSocket (from WebApi)
+    - title: WebSocket (migration from WebAPI)
       url: /web_websocket_01.html
       output: web
 
