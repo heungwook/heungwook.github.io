@@ -47,8 +47,7 @@ All my ASP.NET apps are running on Windows, so until now, IIS has handled all HT
         > dotnet dev-certs https --trust
     - [Kestrel endpoint configuration](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/endpoints?view=aspnetcore-8.0)
         
-        ```C#
-
+        ```CSharp
         public static void Main(string[] args)
         {
             int httpsPort = ServerCfg.WebSocketPort;
@@ -63,9 +62,7 @@ All my ASP.NET apps are running on Windows, so until now, IIS has handled all HT
                         serverOptions.ListenAnyIP(httpsPort, listenOptions =>
                         {
                             listenOptions.UseHttps(httpsOptions =>
-
                             {
-
                                 var localhostCert = CertificateLoader.LoadFromStoreCert(
                                     "localhost", "My", StoreLocation.CurrentUser,
                                     allowInvalid: true);
@@ -83,18 +80,15 @@ All my ASP.NET apps are running on Windows, so until now, IIS has handled all HT
 
                                     return localhostCert;
                                 };
-
                             });
                         });
 
                     });
-
                     webBuilder.UseStartup<Startup>();
                 })
                 .Build()
                 .Run();
         }
-
         ```
 
 
