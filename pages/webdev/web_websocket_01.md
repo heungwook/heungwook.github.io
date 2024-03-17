@@ -59,7 +59,6 @@ All my ASP.NET apps are running on Windows, so until now, IIS has handled all HT
                 {
                     webBuilder.ConfigureKestrel(serverOptions =>
                     {
-        #if DEBUG
                         serverOptions.Listen(IPAddress.Any, httpPort);
                         serverOptions.ListenAnyIP(httpsPort, listenOptions =>
                         {
@@ -87,21 +86,7 @@ All my ASP.NET apps are running on Windows, so until now, IIS has handled all HT
 
                             });
                         });
-        #else
-                        serverOptions.Listen(IPAddress.Any, httpPort);
-                        serverOptions.ListenAnyIP(httpsPort, listenOptions =>
-                        {
-                            listenOptions.UseHttps(httpsOptions =>
 
-                            {
-                                string curAssemblyPath = new System.Uri(System.Reflection.Assembly.GetExecutingAssembly().Location).LocalPath;
-                                string assemblyFolder = Path.GetDirectoryName(curAssemblyPath);
-                                string certPath = Path.Combine(assemblyFolder, "webedit01.oryonsoft.com.pfx");
-                                listenOptions.UseHttps(certPath, "PW");
-
-                            });
-                        });
-        #endif
                     });
 
                     webBuilder.UseStartup<Startup>();
