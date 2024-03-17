@@ -1,6 +1,6 @@
-b---
-title: WebSocket (migration from WebAPI)
-tags: [wpf]
+---
+title: Overivew
+tags: []
 keywords:
 summary: 
 sidebar: mydoc_sidebar
@@ -10,103 +10,40 @@ folder: webdev
 
 ## Overview
 
-For years, the development of a new web-based user interface for the Orion Report Editor has been in progress. Orion itself features the ability to create HTML5-Canvas (JavaScript) outputs, but these outputs are static HTML pages. The Web Editor module was originally developed in 2017 using ASP.NET WebAPI (.NET Framework) and JavaScript. In late 2023, it was redesigned with ASP.NET Core WebAPI (.NET 8) and React/TypeScript.
+Orion Report Designer supports various output formats including PDF, PostScript, HTML-5, Images(png, jpg, tiff, bmp) and also supports WPF, WinForms, Web design user interfaces.
+Each output handles text fonts in different ways, 
 
-In March 2024, I am integrating Orion's Web Editor module into a customer's environment, and the WebAPI has been replaced with WebSocket.
+- WPF supports TTF(TreuType Font) and OTF(OpenType Font)
+- WinForms only supports TTF
+- PostScript supports PS specific fonts which are not compatible with other output formats
+- HTML supports TTF/OTF, WOFF, WOFF2
 
-- The Web Editor needs to be embedded into the customer's shopping mall site, which is hosted on the Cafe24 shopping mall services.
-- The Web Editor will be a part (Modal or Frame) of Cafe24's product page, using IFRAME or EMBED tags.
-- SSL (HTTPS, WSS) is required.
+Drawing the exactly same text in different output formats is a key issue. 
 
-****
+So, for the unified way of drawing texts in PDF, PostScript, HTML-5 Canvas, WPF and WinForms, WPF font geometry would be a good choice. WPF can extract font geometry from TTF/OTF font files and WPF geometry can be converted to GDI+ Graphics Path. GDI+ Graphics Path also converted to PostScript path and HTML-5 Canvas Path. 
 
-- Orion Web Editor with WebAPI 
-    ![Orion Web Editor with WebAPI](WebEdit_WebAPI.png)
+Using path based text presentation requires some tricks for better speed and smaller outputs.
 
-*****
+- WPF Geometries/GDI+ graphics pathes should be cached
+    - Extracting geometry from font file and converion takes time
+- PostScript and HTML-5 Canvas font pathes should be reused
+    - In PostScript, once a character is used, put its path into the header of PS file then call the definition when reuse the character
+    - In HTML, the path of a character is defined as a function at the top of JavaScript, then the function is called where the character appears
+- PostScript header and body should be compressed
+- To support extended font styles like reverse-order, flips(horizontally, vertically), width-height ratio, outlined, character gap, line gap all output formats should have commands for transforming the pathes 
 
-- Orion Web Editor with Kestrel and WebSocket 
-    ![Orion Web Editor with WebSocket](WebEdit_WebSocket.png)
+- Web Version of Designer UI
 
-****
+    ![Web Version of Designer UI](OrionDesigner_WebUI.png)
 
-## IIS vs Kestrel for HTTPS and WSS
+- WPF Version of Designer UI
 
-### IIS and Backend Services
+    ![WPF Version of Designer UI](OrionDesigner_WPF.png)
 
-Initially, I configured the SSL WebSocket service through IIS because IIS handles the SSL certificate and connections from browsers. However, it did not work as I tested in the development environment using Kestrel. With IIS, the backend TCP socket server was very unstable, and I couldn't determine the cause. I suspect that the threading of the IIS worker process might have affected it.
+- WinForms Version of Designer UI
 
-### Kestrel with SSL Certificate
+    ![WinForms Version of Designer UI](OrionDesigner_WinForms.png)
 
-All my ASP.NET apps are running on Windows, so until now, IIS has handled all HTTP/HTTPS connections. I've never configured SSL for an ASP.NET app with Kestrel. Here are the steps to configure Kestrel SSL services.
-
-- Development Environment
-
-    - [Create Self-signed certificate for localhost SSL](https://learn.microsoft.com/en-us/dotnet/core/additional-tools/self-signed-certificates-guide#create-a-self-signed-certificate)
-        > dotnet dev-certs https -ep $env:USERPROFILE\.aspnet\https\localhost.pfx -p PASSWD</br>
-        > dotnet dev-certs https --trust
-    - [Kestrel endpoint configuration](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/endpoints?view=aspnetcore-8.0)
-        
-        ```C#
-
-        public static void Main(string[] args)
-        {
-            int httpsPort = ServerCfg.WebSocketPort;
-            int httpPort = ServerCfg.OrionWebSocketPort;
-
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.ConfigureKestrel(serverOptions =>
-                    {
-                        serverOptions.Listen(IPAddress.Any, httpPort);
-                        serverOptions.ListenAnyIP(httpsPort, listenOptions =>
-                        {
-                            listenOptions.UseHttps(httpsOptions =>
-
-                            {
-
-                                var localhostCert = CertificateLoader.LoadFromStoreCert(
-                                    "localhost", "My", StoreLocation.CurrentUser,
-                                    allowInvalid: true);
-                                var certs = new Dictionary<string, X509Certificate2>(StringComparer.OrdinalIgnoreCase)
-                                    {
-                                        { "localhost", localhostCert },
-                                    };
-
-                                httpsOptions.ServerCertificateSelector = (connectionContext, name) =>
-                                {
-                                    if (name != null && certs.TryGetValue(name, out var cert))
-                                    {
-                                        return cert;
-                                    }
-
-                                    return localhostCert;
-                                };
-
-                            });
-                        });
-
-                    });
-
-                    webBuilder.UseStartup<Startup>();
-                })
-                .Build()
-                .Run();
-        }
-
-        ```
-
-
-- Production
-
-## WebSocket in .NET
-
-### Reconnecting WebSocket Library
-
-ASP.NET Core supports [WebSocket](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.websockets?view=aspnetcore-8.0) and there is a TypeScript library([Reconnecting WebSocket](https://github.com/pladaria/reconnecting-websocket)) featuring automatic reconnection when the connection is lost.  
-
-I chose Reconnection WebSocket and 
 
 
 
