@@ -116,11 +116,91 @@ All my ASP.NET apps are running on Windows, so until now, IIS has handled all HT
 
 ## WebSocket in .NET
 
-### Reconnecting WebSocket Library
+There is a well-designed [WebSocket Server/Client Sample](https://github.com/MV10/WebSocketExample), and I modified it for my project.
+
+### Reconnecting WebSocket Client Library
 
 ASP.NET Core supports [WebSocket](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.websockets?view=aspnetcore-8.0) and there is a TypeScript library([Reconnecting WebSocket](https://github.com/pladaria/reconnecting-websocket)) featuring automatic reconnection when the connection is lost.  
 
-I chose Reconnection WebSocket and 
+### Send Data Timeout and Callback
+
+There are two types of messages: one-way and round-trip. To verify that a message has arrived at Orion and that the response is received within the timeout period, the Message Handler class keeps track of each message, including handling message timeouts. Every message sent to the Orion Report Server receives a response to confirm that the message was processed by Orion.
+
+- MessageHandler Class
+
+    ```TypeScript
+    export class MessageHandler {
+        reconnWebSock: ReconnectingWebSocket;
+        msgID: number;
+        resultCallback: (result: ApiResult) => void | null;
+        timeSpan: TimeSpan;
+        timeoutMS: number;
+        timeoutID: any;
+        retryCount: number;
+        retryMax: number;
+        data: string;
+        timeoutCallback: (event: MessageEvent) => void | null;
+        result: ApiResult | null;
+        success: boolean;
+        isDisposed: boolean;
+
+        constructor(reconnWebSock: ReconnectingWebSocket, msgID: number, resultCallback: (result: ApiResult) => void,
+            timeoutMS: number, data: string, timeoutCallback: (event: MessageEvent) => void | null) {
+            this.reconnWebSock = reconnWebSock;
+            this.msgID = msgID;
+            this.resultCallback = resultCallback;
+            this.timeSpan = TimeSpan.zero;
+            this.timeoutMS = timeoutMS; // 0 = no timeout
+            this.retryCount = 0;
+            this.retryMax = 3;
+            this.data = data;
+            this.timeoutCallback = timeoutCallback;
+            this.result = null;
+            this.success = false;
+            this.isDisposed = false
+            //
+            this.dispose = this.dispose.bind(this);
+            this.timerTick = this.timerTick.bind(this);
+            //
+            this.timeoutID = null;
+            if (this.timeoutMS > 0) {
+                this.timeoutID = setTimeout(this.timerTick, this.timeoutMS);
+            }
+
+        }
+
+        dispose() {
+            this.isDisposed = true;
+            if (this.timeoutID !== null) {
+                clearTimeout(this.timeoutID);
+            }
+        }
+
+        timerTick() {
+            this.retryCount++;
+            if (this.retryCount < this.retryMax) {
+                this.timeoutID = setTimeout(this.timerTick, this.timeoutMS);
+            } else {
+                if (this.timeoutCallback) {
+                    const apiResult: ApiResult = new ApiResult();
+                    apiResult.msgID = this.msgID;
+                    apiResult.success = false;
+                    apiResult.message = `Sending msgID: ${this.msgID} exceeded retry count. data = ${this.data}`;
+                    const msgEvent: MessageEvent = new MessageEvent('timeout', { data: JSON.stringify(apiResult) });
+                    this.timeoutCallback(msgEvent);
+                }
+                this.dispose();
+
+            }
+        }
+    }
+    ```
+
+
+- One way message
+    - No 
+
+- Round trip message
 
 
 
