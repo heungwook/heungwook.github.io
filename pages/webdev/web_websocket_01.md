@@ -42,11 +42,60 @@ All my ASP.NET apps are running on Windows, so until now, IIS has handled all HT
 
 - Development Environment
 
-    - [Create Self-signed certificate for localhost SSL](https://learn.microsoft.com/en-us/dotnet/core/additional-tools/
-    self-signed-certificates-guide#create-a-self-signed-certificate)
-    
+    - [Create Self-signed certificate for localhost SSL](https://learn.microsoft.com/en-us/dotnet/core/additional-tools/self-signed-certificates-guide#create-a-self-signed-certificate)
         > dotnet dev-certs https -ep $env:USERPROFILE\.aspnet\https\localhost.pfx -p PASSWD</br>
         > dotnet dev-certs https --trust
+    - [Kestrel endpoint configuration](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/endpoints?view=aspnetcore-8.0)
+        
+        ```C#
+
+        public static void Main(string[] args)
+        {
+            int httpsPort = ServerCfg.WebSocketPort;
+            int httpPort = ServerCfg.OrionWebSocketPort;
+
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.ConfigureKestrel(serverOptions =>
+                    {
+                        serverOptions.Listen(IPAddress.Any, httpPort);
+                        serverOptions.ListenAnyIP(httpsPort, listenOptions =>
+                        {
+                            listenOptions.UseHttps(httpsOptions =>
+
+                            {
+
+                                var localhostCert = CertificateLoader.LoadFromStoreCert(
+                                    "localhost", "My", StoreLocation.CurrentUser,
+                                    allowInvalid: true);
+                                var certs = new Dictionary<string, X509Certificate2>(StringComparer.OrdinalIgnoreCase)
+                                    {
+                                        { "localhost", localhostCert },
+                                    };
+
+                                httpsOptions.ServerCertificateSelector = (connectionContext, name) =>
+                                {
+                                    if (name != null && certs.TryGetValue(name, out var cert))
+                                    {
+                                        return cert;
+                                    }
+
+                                    return localhostCert;
+                                };
+
+                            });
+                        });
+
+                    });
+
+                    webBuilder.UseStartup<Startup>();
+                })
+                .Build()
+                .Run();
+        }
+
+        ```
 
 
 - Production
