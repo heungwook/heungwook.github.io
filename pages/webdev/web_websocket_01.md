@@ -92,7 +92,27 @@ All my ASP.NET apps are running on Windows, so until now, IIS has handled all HT
         ```
 
 
-- Production
+- Production Configuration
+
+    - Purchase an SSL certificate and convert it to a .pfx file.
+
+    - Configure SSL (assuming the certificate's .pfx file is located in the same folder as the execution assembly).
+    
+        ```CSharp
+        ...
+        serverOptions.Listen(IPAddress.Any, httpPort);
+        serverOptions.ListenAnyIP(httpsPort, listenOptions =>
+        {
+            listenOptions.UseHttps(httpsOptions =>
+            {
+                string curAssemblyPath = new System.Uri(System.Reflection.Assembly.GetExecutingAssembly().Location).LocalPath;
+                string assemblyFolder = Path.GetDirectoryName(curAssemblyPath);
+                string certPath = Path.Combine(assemblyFolder, "webedit01.oryonsoft.com.pfx");
+                listenOptions.UseHttps(certPath, "PASSWD");
+            });
+        });
+        ...
+        ```
 
 ## WebSocket in .NET
 
