@@ -5,6 +5,18 @@ entries:
   product: Table of Contents
   folders:
 
+  - title: WebSocket (migration from WebAPI)
+    output: web, pdf
+    folderitems:
+
+    - title: 01. Overview
+      url: /doc202401_01_overview.html
+      output: web, pdf
+
+    - title: 02. Overview
+      url: /doc202401_02_iis_vs_kestrel.html
+      output: web, pdf
+
   - title: Hidden Shape Creation & Detection
     output: web, pdf
     folderitems:

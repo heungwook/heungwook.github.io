@@ -227,28 +227,28 @@ There are two types of messages: one-way and round-trip. Every message sent to t
 
     - When the response message is received within the timeout period, the message handler calls the callback function, clears itself, and is deleted from the message list.
 
-    ```TypeScript
-    ...
-    sockOnMessage(event: MessageEvent) {
-        if (this.messagesWithCallback === null || this.messagesWithCallback.length == 0) {
-            return;
+        ```TypeScript
+        ...
+        sockOnMessage(event: MessageEvent) {
+            if (this.messagesWithCallback === null || this.messagesWithCallback.length == 0) {
+                return;
+            }
+            const result: ApiResult = JSON.parse(event.data);
+            const handlerIndex: number = this.messagesWithCallback.findIndex(MSG => MSG.msgID === result.msgID);
+            if (handlerIndex < 0) {
+                console.log("handlerIndex < 0 : sockOnMessage() : " + result.message);
+                return;
+            }
+            this.messagesWithCallback[handlerIndex].dispose();
+            const resultCallback = this.messagesWithCallback[handlerIndex].resultCallback;
+            this.messagesWithCallback.splice(handlerIndex, 1);
+            if (resultCallback) {
+                resultCallback(result);
+            } 
+            this.checkDisposedMessageHandlers();
         }
-        const result: ApiResult = JSON.parse(event.data);
-        const handlerIndex: number = this.messagesWithCallback.findIndex(MSG => MSG.msgID === result.msgID);
-        if (handlerIndex < 0) {
-            console.log("handlerIndex < 0 : sockOnMessage() : " + result.message);
-            return;
-        }
-        this.messagesWithCallback[handlerIndex].dispose();
-        const resultCallback = this.messagesWithCallback[handlerIndex].resultCallback;
-        this.messagesWithCallback.splice(handlerIndex, 1);
-        if (resultCallback) {
-            resultCallback(result);
-        } 
-        this.checkDisposedMessageHandlers();
-    }
-    ...
-    ```
+        ...
+        ```
 
 
 ## WebSocket Server in .NET 8
