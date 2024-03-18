@@ -190,17 +190,70 @@ There are two types of messages: one-way and round-trip. To verify that a messag
                     this.timeoutCallback(msgEvent);
                 }
                 this.dispose();
-
             }
         }
     }
     ```
 
 
-- One way message
-    - No 
+- One-way message
 
-- Round trip message
+    - No callback function is provided.
+    - When the dummy response (the receipt for successful transfer) from Orion Server is not received within the timeout period, it records a timeout message to the console.
+
+- Round-trip message
+
+    - The sendData() function adds a new message handler to the message list and sends it to the Orion WebSocket Server.
+
+    ```TypeScript
+    ...
+    async sendData(data: object, resultCallback: ((result: ApiResult) => void), timeoutMS: number = this.defaultTimeoutMS): Promise<void> {
+        this.checkDisposedMessageHandlers();
+
+        if (this.reconnWebSock?.readyState !== ReconnectingWebSocket.OPEN) {
+            console.log("sendData() ERR : this.reconnWebSock?.readyState !== WebSocket.OPEN");
+            return;
+        }
+
+        data = { '@MSGID': this.messageCount, ...data };
+        const jsonData = JSON.stringify(data);
+        const msgHandle = new MessageHandler(
+            this.reconnWebSock, this.messageCount++,
+            resultCallback, timeoutMS, jsonData, this.sockOnMessage);
+        msgHandle.retryMax = this.defaultRetryMax;
+        this.messagesWithCallback.push(msgHandle);
+        this.reconnWebSock.send(jsonData);
+    }
+    ...
+    ```
+
+    - When the response message is received within the timeout period, the message handler calls the callback function, clears itself, and is deleted from the message list.
+
+    ```TypeScript
+    ...
+    sockOnMessage(event: MessageEvent) {
+        if (this.messagesWithCallback === null || this.messagesWithCallback.length == 0) {
+            return;
+        }
+        const result: ApiResult = JSON.parse(event.data);
+        const handlerIndex: number = this.messagesWithCallback.findIndex(MSG => MSG.msgID === result.msgID);
+        if (handlerIndex < 0) {
+            console.log("handlerIndex < 0 : sockOnMessage() : " + result.message);
+            return;
+        }
+        this.messagesWithCallback[handlerIndex].dispose();
+        const resultCallback = this.messagesWithCallback[handlerIndex].resultCallback;
+        this.messagesWithCallback.splice(handlerIndex, 1);
+        if (resultCallback) {
+            resultCallback(result);
+        } 
+        this.checkDisposedMessageHandlers();
+    }
+    ...
+    ```
+
+
+
 
 
 
