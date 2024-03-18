@@ -719,6 +719,11 @@ ol.series li {
 #mysidebar .nav ul {
     background-color: #FAFAFA;
 }
+
+#mysidebar li {
+    padding-left: 20px;
+}
+
 .nav ul.series li {
     list-style: decimal;
     font-size:12px;
