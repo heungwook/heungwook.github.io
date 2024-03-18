@@ -122,7 +122,7 @@ ASP.NET Core supports [WebSocket](https://learn.microsoft.com/en-us/dotnet/api/m
 
 ### Send Data Timeout and Callback
 
-There are two types of messages: one-way and round-trip. To verify that a message has arrived at Orion and that the response is received within the timeout period, the Message Handler class keeps track of each message, including handling message timeouts. Every message sent to the Orion Report Server receives a response to confirm that the message was processed by Orion.
+There are two types of messages: one-way and round-trip. Every message sent to the Orion Report Server receives a response to confirm that the message was processed by the Orion. The Message Handler class keeps track of each message, including handling message timeouts. 
 
 - MessageHandler Class
 
