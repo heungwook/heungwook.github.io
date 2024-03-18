@@ -18,11 +18,11 @@ entries:
       output: web, pdf
 
     - title: 03. WebSocket Client in TypeScript
-      url: /doc202401_03_websocket_client.html
+      url: /doc202401_03_webwocket_client.html
       output: web, pdf
 
     - title: 04. WebSocket Server in .NET
-      url: /doc202401_04_websocket_Server.html
+      url: /doc202401_04_websocket_server.html
       output: web, pdf
 
   - title: Hidden Shape Creation & Detection
