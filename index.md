@@ -24,7 +24,7 @@ summary: Blog for documenting experiences and technical issues encountered while
 |Period|Project Name|Skills|
 |------|------------|------|
 |Mar. 2024 ~ |[Web Editor with WebSocket/Kestrel](/web_websocket_01.html)|React, TypeScript, APS.NET Core, WebSocket, Kestrel|
-|Jun. ~ Dec. 2023|[Hidden Shape Creation & Detection](/doc202301_01.html)|Machine Learning, GPUImage, Swift, Kotlin, .NET 8, WPF|
+|Jun. ~ Dec. 2023|[Hidden Shape Creation & Detection](/doc202301_01.html)|Machine Learning(yolov8, TensorFlow Lite), GPUImage, Swift, Kotlin, .NET 8, WPF|
 |Aug. ~ Nov. 2023|[Hidden Image Viewer, Hidden Barcode Detector](/doc202302_01.html)|Swift, Kotlin, GPUImage, OpenCV|
 |May ~ Dec. 2022|Security Pattern Generation for Electronic Passport|.NET Framework, WPF|
 |Aug. ~ Nov. 2022|2D Barcode System for Authentication|ASP.NET MVC, Javascript, Cubrid DB|
