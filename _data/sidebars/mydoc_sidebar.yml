@@ -65,10 +65,6 @@ entries:
     output: web
     folderitems:
 
-    - title: WebSocket (migration from WebAPI)
-      url: /web_websocket_01.html
-      output: web
-
     - title: ReactJS - Updating
       url: /web_reactjs_01.html
       output: web
@@ -93,23 +89,23 @@ entries:
     output: web
     folderitems:
 
-    - title: Overview
+    - title: 01. Overview
       url: /usingfonts_overview.html
       output: web
 
-    - title: Using WPF Font Geometry
+    - title: 02. Using WPF Font Geometry
       url: /usingfonts_wpffontgeometry.html
       output: web
 
-    - title: Using Font in PostScript with GDI+ Graphics Path
+    - title: 03. Using Font in PostScript with GDI+ Graphics Path
       url: /usingfonts_postscript.html
       output: web
 
-    - title: Using Font in HTML-5 Canvas with GDI+ Graphics Path
+    - title: 04. Using Font in HTML-5 Canvas with GDI+ Graphics Path
       url: /usingfonts_html5canvas.html
       output: web
 
-    - title: Drawing Texts in PDF
+    - title: 05. Drawing Texts in PDF
       url: /usingfonts_pdf.html
       output: web
 
