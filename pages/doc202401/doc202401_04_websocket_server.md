@@ -12,7 +12,9 @@ folder: doc202401
 
 There is a well-designed [WebSocket Server/Client Sample](https://github.com/MV10/WebSocketExample) in .NET, and I modified it for the Orion WebSocket Server application.
 
-As I mentioned earlier this post, Orion WebSocket Server is running under Kestrel Web Server, and there are two services running: WebSocket server service and TCP Orion message server service.
+As I mentioned earlier in this post, the Orion WebSocket Server is running on the Kestrel Web Server, and there are two services running: the WebSocket server service and the TCP Orion message server service.
+
+- Startup Class
 
     ```CSharp
     public class Startup
