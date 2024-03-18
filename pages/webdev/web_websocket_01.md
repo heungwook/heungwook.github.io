@@ -114,9 +114,7 @@ Until previous project, all my ASP.NET apps were running on Windows, so IIS had 
         ...
         ```
 
-## WebSocket in .NET
-
-There is a well-designed [WebSocket Server/Client Sample](https://github.com/MV10/WebSocketExample), and I modified it for my project.
+## WebSocket Client in TypeScript
 
 ### Reconnecting WebSocket Client Library
 
@@ -252,6 +250,10 @@ There are two types of messages: one-way and round-trip. To verify that a messag
     ...
     ```
 
+
+## WebSocket Server in .NET 8
+
+There is a well-designed [WebSocket Server/Client Sample](https://github.com/MV10/WebSocketExample) in .NET, and I modified it for the Orion WebSocket Server application.
 
 
 
