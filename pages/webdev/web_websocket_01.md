@@ -10,7 +10,7 @@ folder: webdev
 
 ## Overview
 
-For years, the development of a new web-based user interface for the Orion Report Editor has been in progress. Orion itself features the ability to create HTML5-Canvas (JavaScript) outputs, but these outputs are static HTML pages. The Web Editor module was originally developed in 2017 using ASP.NET WebAPI (.NET Framework) and JavaScript. In late 2023, it was redesigned with ASP.NET Core WebAPI (.NET 8) and React/TypeScript.
+For years, the development of a new web-based user interface for the Orion Report Editor has been in progress. Orion itself features the ability to create HTML5-Canvas (JavaScript) outputs, but these outputs are static HTML pages. The Web Editor module enables Orion to design forms and create outputs via the Web without the need to install the Orion Report Designer application to the customer's local PC. Moreover, Mac and Linux users can also use Orion Report Designer. It was originally developed in 2017 using ASP.NET WebAPI (.NET Framework) and JavaScript. In late 2023, it was redesigned with ASP.NET Core WebAPI (.NET 8) and React/TypeScript.
 
 In March 2024, I am integrating Orion's Web Editor module into a customer's environment, and the WebAPI has been replaced with WebSocket.
 
@@ -34,7 +34,7 @@ In March 2024, I am integrating Orion's Web Editor module into a customer's envi
 
 ### IIS and Backend Services
 
-Initially, I configured the SSL WebSocket service through IIS because IIS handles the SSL certificate and connections from browsers. However, it did not work as I tested in the development environment using Kestrel. With IIS, the backend TCP socket server was very unstable, and I couldn't determine the cause. I suspect that the threading of the IIS worker process might have affected it.
+Initially, I configured the SSL WebSocket service through IIS because IIS handles the SSL certificate and connections from browsers, so there was nothing to do on the application side. However, it did not work as I tested in the development environment using Kestrel. With IIS, the backend TCP socket server was very unstable, and I couldn't determine the cause. I suspect that the threading of the IIS worker process might have affected it.
 
 ### Kestrel with SSL Certificate
 
