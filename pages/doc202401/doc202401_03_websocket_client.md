@@ -96,27 +96,27 @@ There are two types of messages: one-way and round-trip. Every message sent to t
 
     - The sendData() function adds a new message handler to the message list and sends it to the Orion WebSocket Server.
 
-    ```TypeScript
-    ...
-    async sendData(data: object, resultCallback: ((result: ApiResult) => void), timeoutMS: number = this.defaultTimeoutMS): Promise<void> {
-        this.checkDisposedMessageHandlers();
+        ```TypeScript
+        ...
+        async sendData(data: object, resultCallback: ((result: ApiResult) => void), timeoutMS: number = this.defaultTimeoutMS): Promise<void> {
+            this.checkDisposedMessageHandlers();
 
-        if (this.reconnWebSock?.readyState !== ReconnectingWebSocket.OPEN) {
-            console.log("sendData() ERR : this.reconnWebSock?.readyState !== WebSocket.OPEN");
-            return;
+            if (this.reconnWebSock?.readyState !== ReconnectingWebSocket.OPEN) {
+                console.log("sendData() ERR : this.reconnWebSock?.readyState !== WebSocket.OPEN");
+                return;
+            }
+
+            data = { '@MSGID': this.messageCount, ...data };
+            const jsonData = JSON.stringify(data);
+            const msgHandle = new MessageHandler(
+                this.reconnWebSock, this.messageCount++,
+                resultCallback, timeoutMS, jsonData, this.sockOnMessage);
+            msgHandle.retryMax = this.defaultRetryMax;
+            this.messagesWithCallback.push(msgHandle);
+            this.reconnWebSock.send(jsonData);
         }
-
-        data = { '@MSGID': this.messageCount, ...data };
-        const jsonData = JSON.stringify(data);
-        const msgHandle = new MessageHandler(
-            this.reconnWebSock, this.messageCount++,
-            resultCallback, timeoutMS, jsonData, this.sockOnMessage);
-        msgHandle.retryMax = this.defaultRetryMax;
-        this.messagesWithCallback.push(msgHandle);
-        this.reconnWebSock.send(jsonData);
-    }
-    ...
-    ```
+        ...
+        ```
 
     - When the response message is received within the timeout period, the message handler calls the callback function, clears itself, and is deleted from the message list.
 
