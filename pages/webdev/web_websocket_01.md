@@ -38,7 +38,7 @@ Initially, I configured the SSL WebSocket service through IIS because IIS handle
 
 ### Kestrel with SSL Certificate
 
-All my ASP.NET apps are running on Windows, so until now, IIS has handled all HTTP/HTTPS connections. I've never configured SSL for an ASP.NET app with Kestrel. Here are the steps to configure Kestrel SSL services.
+Until this project, all my ASP.NET apps were running on Windows, so IIS had handled all HTTP/HTTPS connections. I've never configured SSL for an ASP.NET app with Kestrel. Here are the steps to configure Kestrel SSL services.
 
 - Development Environment
 
