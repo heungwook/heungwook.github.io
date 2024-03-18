@@ -17,23 +17,31 @@ entries:
       url: /doc202401_02_iis_vs_kestrel.html
       output: web, pdf
 
+    - title: 03. WebSocket Client in TypeScript
+      url: /doc202401_03_websocket_client.html
+      output: web, pdf
+
+    - title: 04. WebSocket Server in .NET
+      url: /doc202401_04_websocket_Server.html
+      output: web, pdf
+
   - title: Hidden Shape Creation & Detection
     output: web, pdf
     folderitems:
 
-    - title: Project Overview
+    - title: 01. Project Overview
       url: /doc202301_01.html
       output: web, pdf
 
-    - title: Machine Learning - Shape Detection
+    - title: 02. Machine Learning - Shape Detection
       url: /doc202301_02.html
       output: web, pdf
 
-    - title: Shape Detection App - CoreML & TensorFlow Lite
+    - title: 03. Shape Detection App - CoreML & TensorFlow Lite
       url: /doc202301_03.html
       output: web, pdf
 
-    - title: Shape Designer Desktop App - .NET 8 + WPF
+    - title: 04. Shape Designer Desktop App - .NET 8 + WPF
       url: /doc202301_04.html
       output: web, pdf
 
@@ -41,15 +49,15 @@ entries:
     output: web
     folderitems:
 
-    - title: Project Overview
+    - title: 01. Project Overview
       url: /doc202302_01.html
       output: web
 
-    - title: Barcode Detection from GPUImage/OpenCV Processed Images
+    - title: 02. Barcode Detection from GPUImage/OpenCV Processed Images
       url: /doc202302_02.html
       output: web
 
-    - title: Image Processing with GPUImage/OpenCV
+    - title: 03. Image Processing with GPUImage/OpenCV
       url: /doc202302_03.html
       output: web
 
