@@ -13,7 +13,7 @@ entries:
       url: /doc202401_01_overview.html
       output: web, pdf
 
-    - title: 02. Overview
+    - title: 02. IIS vs Kestrel for HTTPS and WSS
       url: /doc202401_02_iis_vs_kestrel.html
       output: web, pdf
 
