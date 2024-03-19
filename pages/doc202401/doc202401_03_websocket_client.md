@@ -11,7 +11,45 @@ folder: doc202401
 
 ### Reconnecting WebSocket Client Library
 
-ASP.NET Core supports [WebSocket](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.websockets?view=aspnetcore-8.0) and there is a TypeScript library([Reconnecting WebSocket](https://github.com/pladaria/reconnecting-websocket)) featuring automatic reconnection when the connection is lost.  
+There is a TypeScript library([Reconnecting WebSocket](https://github.com/pladaria/reconnecting-websocket)) featuring automatic reconnection when the connection is lost.  
+
+Since initial connection or reconnection occur in asynchronously, if the codes require to make websocket connection before the execution, below code with delay() and timeout methods was useful.
+
+- Waiting for connection
+
+    ```TypeScript
+    ...
+    async delay(milliseconds: number) {
+        return new Promise(resolve => {
+            setTimeout(resolve, milliseconds);
+        });
+    }
+
+    async waitForConnecting(waitTimeoutMS: number = 3000): Promise<void> {
+        await this.delay(100);
+        console.log('initDesign() - wait for connection...');
+        let timeElapsed = 0;
+        while (timeElapsed <= waitTimeoutMS) {
+            if (this.webSocketCfg.reconnWebSock
+                && this.webSocketCfg.reconnWebSock.readyState === ReconnectingWebSocket.OPEN) {
+                console.log("WebSocket Connected!!");
+                break;
+            }
+            await this.delay(100);
+            timeElapsed += 100;
+        }
+        if (timeElapsed > waitTimeoutMS) {
+            console.log("WebSocket Connection Timeout!!");
+        }
+    }
+
+    async initDesign(waitForConnecting: boolean = false, waitTimeoutMS: number = 3000): Promise<void> {
+        await this.webSocketCfg.connectWebSocket();
+        if (waitForConnecting) {
+            await this.waitForConnecting(waitTimeoutMS);
+        }
+    ...
+    ```
 
 ### Send Data Timeout and Callback
 
