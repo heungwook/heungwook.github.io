@@ -12,7 +12,7 @@ folder: doc202401
 
 ### IIS and Backend Services
 
-Initially, I configured the SSL WebSocket service through IIS, because IIS does everything for web connections including the SSL certificate and HTTPS connections. So there was nothing to do on the application side for SSL and HTTPS. However, it did not work as I tested in the development environment using Kestrel. With IIS, the backend TCP socket server was very unstable, and I couldn't determine the cause. I suspect that the threading of the IIS worker process might have affected it.
+Initially, I configured the SSL WebSocket service through IIS because IIS handles all aspects of web connections, including the SSL certificate and HTTPS connections. Therefore, there was nothing to do on the application side for SSL and HTTPS. However, it did not work as I tested in the development environment using Kestrel. With IIS, the backend TCP socket server was very unstable, and I couldn't determine the cause. I suspect that the threading of the IIS worker process might have affected it.
 
 ### Kestrel with SSL Certificate
 
