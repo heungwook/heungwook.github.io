@@ -13,7 +13,7 @@ folder: doc202401
 
 There is a TypeScript library([Reconnecting WebSocket](https://github.com/pladaria/reconnecting-websocket)) featuring automatic reconnection when the connection is lost.  
 
-Since initial connection or reconnection occur in asynchronously, if the codes require to make websocket connection before the execution, below code with delay() and timeout methods was useful.
+Since the initial connection or reconnection occurs asynchronously, if the code requires establishing a WebSocket connection before execution, the code below with delay() and timeout methods is useful.
 
 - Waiting for connection
 
