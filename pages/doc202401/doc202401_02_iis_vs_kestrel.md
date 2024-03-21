@@ -69,7 +69,7 @@ Until previous project, all my ASP.NET apps were running on Windows, so IIS had 
         }
         ```
     
-    - Listening port with no main(string[]) configuration
+    - Listening ports with no Main(string[]) configuration
 
         ```CSharp
         using Microsoft.AspNetCore.Server.Kestrel.Https;
