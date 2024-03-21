@@ -68,7 +68,43 @@ Until previous project, all my ASP.NET apps were running on Windows, so IIS had 
                 .Run();
         }
         ```
+    
+    - Listening port with no main(string[]) configuration
 
+        ```CSharp
+        using Microsoft.AspNetCore.Server.Kestrel.Https;
+        using System.Net;
+        using System.Security.Cryptography.X509Certificates;
+
+        var builder = WebApplication.CreateBuilder(args);
+
+        builder.WebHost.ConfigureKestrel(serverOptions => {
+            serverOptions.Listen(IPAddress.Any, 8891);
+            serverOptions.ListenAnyIP(8892, listenOptions =>
+            {
+                listenOptions.UseHttps(httpsOptions =>
+                {
+                    var localhostCert = CertificateLoader.LoadFromStoreCert(
+                        "localhost", "My", StoreLocation.CurrentUser,
+                        allowInvalid: true);
+                    var certs = new Dictionary<string, X509Certificate2>(StringComparer.OrdinalIgnoreCase)
+                                    {
+                                        { "localhost", localhostCert },
+                                    };
+
+                    httpsOptions.ServerCertificateSelector = (connectionContext, name) =>
+                    {
+                        if (name != null && certs.TryGetValue(name, out var cert))
+                        {
+                            return cert;
+                        }
+
+                        return localhostCert;
+                    };
+                });
+            });
+        });
+        ```
 
 - Production Configuration
 
