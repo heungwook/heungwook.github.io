@@ -88,9 +88,9 @@ Until previous project, all my ASP.NET apps were running on Windows, so IIS had 
                         "localhost", "My", StoreLocation.CurrentUser,
                         allowInvalid: true);
                     var certs = new Dictionary<string, X509Certificate2>(StringComparer.OrdinalIgnoreCase)
-                                    {
-                                        { "localhost", localhostCert },
-                                    };
+                    {
+                        { "localhost", localhostCert },
+                    };
 
                     httpsOptions.ServerCertificateSelector = (connectionContext, name) =>
                     {

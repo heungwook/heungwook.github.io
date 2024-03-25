@@ -5,6 +5,16 @@ entries:
   product: Table of Contents
   folders:
 
+  - title: Web Component Designer with MAUI
+    output: web, pdf
+    folderitems:
+
+    - title: 01. Overview
+      url: /doc202402_01_overview.html
+      output: web, pdf
+
+
+
   - title: WebSocket (migration from WebAPI)
     output: web, pdf
     folderitems:
@@ -65,8 +75,12 @@ entries:
     output: web
     folderitems:
 
-    - title: ReactJS - Updating
-      url: /web_reactjs_01.html
+    - title: Web Component with React
+      url: /web_component_with_react_01.html
+      output: web
+
+    - title: React - Updating
+      url: /web_react_01.html
       output: web
 
     - title: TypeScript - Updating
