@@ -13,8 +13,6 @@ entries:
       url: /doc202402_01_overview.html
       output: web, pdf
 
-
-
   - title: WebSocket (migration from WebAPI)
     output: web, pdf
     folderitems:

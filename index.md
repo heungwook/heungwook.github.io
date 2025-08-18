@@ -1,5 +1,5 @@
 ---
-title: "Programming Tech Issues by H. Song"
+title: "Programming Blog by H. Song"
 keywords: homepage
 tags: []
 sidebar: mydoc_sidebar
